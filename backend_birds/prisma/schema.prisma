@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  email String @unique
+
+  name String?
+
+  posts Post[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+
+  title String
+
+  content String?
+
+  published Boolean @default(false)
+
+  author User @relation(fields: [authorId], references: [id])
+
+  authorId Int
+}
+
+model Drone {
+  id           Int         @id @default(autoincrement())
+  serialNumber String      @unique
+  manufacturer String
+  mac          String
+  ipv4         String
+  ipv6         String
+  firmware     String
+  positionY    String
+  positionX    String
+  altitude     String
+  BadPilots    BadPilots[]
+}
+
+// <drone>
+//       <serialNumber>SN-MerxLE37jn</serialNumber>
+//       <model>HRP-DRP 1 S</model>
+//       <manufacturer>ProDröne Ltd</manufacturer>
+//       <mac>94:e9:d8:73:58:b0</mac>
+//       <ipv4>75.166.197.11</ipv4>
+//       <ipv6>9276:5691:7b6f:7654:940c:3018:7ec6:2b60</ipv6>
+//       <firmware>8.4.8</firmware>
+//       <positionY>316577.965963633</positionY>
+//       <positionX>404519.2113500471</positionX>
+//       <altitude>4245.955221227841</altitude>
+//     </drone>
+
+model BadPilots {
+  id          Int    @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  phoneNumber String
+  created     String
+  email       String @unique
+  drone       Drone  @relation(fields: [email], references: [serialNumber])
+}
+
+// {"pilotId":"P-WXxPComjWL",
+// "firstName":"Shany",
+// "lastName":"Wilderman",
+// "phoneNumber":"+210656113860",
+// "createdDt":"2022-03-09T21:22:04.198Z",
+// "email":"shany.wilderman@example.com"}%       
