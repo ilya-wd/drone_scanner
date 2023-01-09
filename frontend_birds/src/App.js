@@ -2,23 +2,45 @@ import logo from './logo.svg'
 import './App.css'
 import { useEffect, useState } from 'react'
 import droneService from './services/droneService'
+import pilotService from './services/pilotService'
 import Drone from './components/Drone'
 
 function App() {
-  const [data, setData] = useState([])
+  const [drones, setDrones] = useState([])
+  const [pilots, setPilots] = useState([])
 
   useEffect(() => {
-    droneService.getAll().then((drones) => {
-      setData(drones)
+    droneService.getAllDrones().then((drones) => {
+      setDrones(drones)
+    })
+  }, [])
+
+  useEffect(() => {
+    pilotService.getAllPilots().then((pilots) => {
+      setPilots(pilots)
     })
   }, [])
 
   return (
     <div className="App">
-      <div>Hi</div>
-      {data.map((drone) => (
-        <div key={drone.id}>{drone.serialNumber}</div>
-      ))}
+      <div>
+        <h3>Pilots</h3>
+        {pilots.map((pilot) => (
+          <div key={pilot.id}>
+            {pilot.id} | {pilot.email} | {pilot.droneId}
+          </div>
+        ))}
+      </div>
+      <div>
+        <h3>Drones</h3>
+        {drones.map((drone) => (
+          <div key={drone.id}>
+            {drone.id} | {drone.serialNumber} | {drone.lastSavedAt}{' '}
+          </div>
+        ))}
+      </div>
+
+      <div>Current time: {new Date(Date.now()).toISOString()}</div>
     </div>
   )
 }
