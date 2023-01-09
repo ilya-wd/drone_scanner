@@ -42,9 +42,10 @@ model Drone {
   ipv4         String
   ipv6         String
   firmware     String
-  positionY    String
-  positionX    String
-  altitude     String
+  positionY    Float
+  positionX    Float
+  altitude     Float
+  lastSavedAt  DateTime    @default(now())
   BadPilots    BadPilots[]
 }
 
