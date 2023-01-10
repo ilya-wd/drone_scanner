@@ -17,8 +17,6 @@ const calculateDistance = (drone) => {
 }
 
 const saveDrones = async (drones) => {
-  // await prisma.drone.deleteMany({})
-
   drones.forEach(async (drone) => {
     const existingDrone = await prisma.drone.findUnique({
       where: {
@@ -26,10 +24,10 @@ const saveDrones = async (drones) => {
       },
     })
 
-    console.log(drone.serialNumber._text)
+    // console.log(drone.serialNumber._text)
     if (existingDrone === null) {
-      // 1. find a pilot
       const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
+      // 1. find a pilot
 
       let createdDr
       if (pilot) {
@@ -70,13 +68,17 @@ const saveDrones = async (drones) => {
             positionX: Number(drone.positionX._text),
             altitude: Number(drone.altitude._text),
             distanceToNest: calculateDistance(drone),
-            pilot: null,
+            pilot: undefined,
           },
         })
       }
 
       console.log('CREATED', createdDr)
+      createdDr
     } else {
+      console.log('DRONE TO UPDATE', drone)
+
+      const pilotForUpdate = drone.pilot ? drone.pilot : undefined
       await prisma.drone.update({
         where: {
           serialNumber: drone.serialNumber._text,
@@ -84,22 +86,45 @@ const saveDrones = async (drones) => {
         data: {
           lastSavedAt: new Date(Date.now()).toISOString(),
           distanceToNest: calculateDistance(drone),
+          manufacturer: drone.manufacturer._text,
+          mac: drone.mac._text,
+          ipv4: drone.ipv4._text,
+          ipv6: drone.ipv6._text,
+          firmware: drone.firmware._text,
+          positionY: Number(drone.positionY._text),
+          positionX: Number(drone.positionX._text),
+          altitude: Number(drone.altitude._text),
+          pilot: pilotForUpdate,
         },
       })
     }
   })
 }
 
-const checkDroneInDb = async (drone) => {
-  const result = await prisma.drone.findFirst({
+const deleteDrones = async () => {
+  // console.log('DELETING')
+  const drones = await prisma.drone.findMany({})
+  const dateNow = new Date(Date.now()).toISOString()
+
+  const dronesFiltered = drones.filter((drone) => new Date(dateNow) - drone.lastSavedAt > 10)
+
+  // dronesFiltered.map(async (drone) => {
+  //   await prisma.drone.delete({
+  //     where: {
+  //       serialNumber: drone.serialNumber,
+  //     },
+  //   })
+  // })
+
+  await prisma.drone.deleteMany({
     where: {
-      serialNumber: drone.serialNumber,
+      serialNumber: {
+        in: dronesFiltered.map((d) => d.serialNumber),
+      },
     },
   })
 
-  return result
+  // console.log('SHOULD BE DELETED')
 }
 
-const findPilot = async (drone) => {}
-
-module.exports = { filterPosition, saveDrones, checkDroneInDb }
+module.exports = { filterPosition, saveDrones, deleteDrones }

@@ -8,6 +8,8 @@ const convert = require('xml-js')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const { PrismaClient } = require('@prisma/client')
+var cron = require('node-cron')
+const { deleteDrones } = require('./utils/drone_helper')
 
 const app = express()
 
@@ -24,6 +26,15 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use('/api/drones', dronesRouter)
 app.use('/api/pilots', pilotsRouter)
+
+// const cronScan = cron.schedule('30/* * * * * *', async () => {
+//   await axios.get('http://localhost:3030/api/drones/scan')
+// })
+
+// const cronDelete = cron.schedule('3 * * * * *', () => {
+//   console.log('DRONES DELETED')
+//   deleteDrones()
+// })
 
 app.use(middleware.unknownEndpoint)
 
