@@ -11,19 +11,20 @@ datasource db {
 }
 
 model Drone {
-  id             Int      @id @default(autoincrement())
-  serialNumber   String   @unique
-  manufacturer   String
-  mac            String
-  ipv4           String
-  ipv6           String
-  firmware       String
-  positionY      Float
-  positionX      Float
-  altitude       Float
-  lastSavedAt    DateTime @default(now())
-  distanceToNest Float
-  pilot          Pilot?
+  id              Int      @id @default(autoincrement())
+  serialNumber    String   @unique
+  manufacturer    String
+  mac             String
+  ipv4            String
+  ipv6            String
+  firmware        String
+  positionY       Float
+  positionX       Float
+  altitude        Float
+  lastSavedAt     DateTime @default(now())
+  currentDistance Float
+  closestDistance Float
+  pilot           Pilot?
 }
 
 model Pilot {

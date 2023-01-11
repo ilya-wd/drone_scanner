@@ -27,9 +27,9 @@ app.use(middleware.requestLogger)
 app.use('/api/drones', dronesRouter)
 app.use('/api/pilots', pilotsRouter)
 
-const cronScan = cron.schedule('30/* * * * * *', async () => {
-  await axios.get('http://localhost:3030/api/drones/scan')
-})
+// const cronScan = cron.schedule('20/* * * * * *', async () => {
+//   await axios.get('http://localhost:3030/api/drones/scan')
+// })
 
 // const cronDelete = cron.schedule('3 * * * * *', () => {
 //   console.log('DRONES DELETED')
