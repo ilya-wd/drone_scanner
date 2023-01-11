@@ -27,8 +27,8 @@ const saveDrones = async (drones) => {
     // console.log(drone.serialNumber._text)
     if (existingDrone === null) {
       // 1. find a pilot
-      // const pilot = await fetchPilot(drone.serialNumber._text)
-      const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
+      const pilot = await fetchPilot(drone.serialNumber._text)
+      // const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
       // console.log('PILOT', pilot)
 
       let createdDr
@@ -44,7 +44,8 @@ const saveDrones = async (drones) => {
             positionY: Number(drone.positionY._text),
             positionX: Number(drone.positionX._text),
             altitude: Number(drone.altitude._text),
-            distanceToNest: calculateDistance(drone),
+            currentDistance: calculateDistance(drone),
+            closestDistance: calculateDistance(drone),
             pilot: {
               create: {
                 pilotId: pilot.data.pilotId,
@@ -69,7 +70,8 @@ const saveDrones = async (drones) => {
             positionY: Number(drone.positionY._text),
             positionX: Number(drone.positionX._text),
             altitude: Number(drone.altitude._text),
-            distanceToNest: calculateDistance(drone),
+            currentDistance: calculateDistance(drone),
+            closestDistance: calculateDistance(drone),
             pilot: undefined,
           },
         })
@@ -80,26 +82,52 @@ const saveDrones = async (drones) => {
     } else {
       console.log('DRONE TO UPDATE', drone)
 
-      const pilotForUpdate = drone.pilot ? drone.pilot : undefined
-      // const pilotForUpdate = drone.pilot ? drone.pilot : await fetchPilot(drone.serialNumber._text)
-      await prisma.drone.updateMany({
-        where: {
-          serialNumber: drone.serialNumber._text,
-        },
-        data: {
-          lastSavedAt: new Date(Date.now()).toISOString(),
-          distanceToNest: calculateDistance(drone),
-          manufacturer: drone.manufacturer._text,
-          mac: drone.mac._text,
-          ipv4: drone.ipv4._text,
-          ipv6: drone.ipv6._text,
-          firmware: drone.firmware._text,
-          positionY: Number(drone.positionY._text),
-          positionX: Number(drone.positionX._text),
-          altitude: Number(drone.altitude._text),
-          pilot: pilotForUpdate,
-        },
-      })
+      if (existingDrone.pilot) {
+        // const pilotForUpdate = drone.pilot ? drone.pilot : undefined
+        // const pilotForUpdate = drone.pilot ? drone.pilot : await fetchPilot(drone.serialNumber._text)
+        await prisma.drone.updateMany({
+          where: {
+            serialNumber: existingDrone.serialNumber,
+          },
+          data: {
+            lastSavedAt: new Date(Date.now()).toISOString(),
+            currentDistance: calculateDistance(drone),
+            closestDistance: calculateDistance(drone) < existingDrone.closestDistance ? calculateDistance(drone) : existingDrone.closestDistance,
+            manufacturer: existingDrone.manufacturer,
+            mac: existingDrone.mac,
+            ipv4: existingDrone.ipv4,
+            ipv6: existingDrone.ipv6,
+            firmware: existingDrone.firmware,
+            positionY: Number(existingDrone.positionY),
+            positionX: Number(existingDrone.positionX),
+            altitude: Number(existingDrone.altitude),
+            pilot: existingDrone.pilot,
+          },
+        })
+      } else {
+        const fetchedPilot = fetchPilot(existingDrone.serialNumber)
+        const pilotForUpdate = fetchedPilot ? fetchPilot : undefined
+
+        await prisma.drone.updateMany({
+          where: {
+            serialNumber: existingDrone.serialNumber,
+          },
+          data: {
+            lastSavedAt: new Date(Date.now()).toISOString(),
+            currentDistance: calculateDistance(drone),
+            closestDistance: calculateDistance(drone) < existingDrone.closestDistance ? calculateDistance(drone) : existingDrone.closestDistance,
+            manufacturer: existingDrone.manufacturer,
+            mac: existingDrone.mac,
+            ipv4: existingDrone.ipv4,
+            ipv6: existingDrone.ipv6,
+            firmware: existingDrone.firmware,
+            positionY: Number(existingDrone.positionY),
+            positionX: Number(existingDrone.positionX),
+            altitude: Number(existingDrone.altitude),
+            pilot: pilotForUpdate,
+          },
+        })
+      }
     }
   })
 }
@@ -122,10 +150,18 @@ const deleteDrones = async () => {
   // console.log('SHOULD BE DELETED')
 }
 
-const fetchPilot = async (serialNumber) => {
-  const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`)
-  if (!pilot) return undefined
-  else return pilot
+const fetchPilot = (serialNumber) => {
+  axios
+    .get(`https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`)
+    .then((pilot) => {
+      return pilot
+    })
+    .catch((error) => {
+      console.log("Couldn't fetch a pilot, will retry later")
+      undefined
+    })
 }
 
-module.exports = { filterPosition, saveDrones, deleteDrones }
+const sleep = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+
+module.exports = { filterPosition, saveDrones, deleteDrones, sleep }

@@ -21,6 +21,7 @@ model Drone {
   positionY       Float
   positionX       Float
   altitude        Float
+  firstSavedAt    DateTime @default(now())
   lastSavedAt     DateTime @default(now())
   currentDistance Float
   closestDistance Float
