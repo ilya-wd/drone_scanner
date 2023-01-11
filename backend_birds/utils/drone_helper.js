@@ -26,8 +26,10 @@ const saveDrones = async (drones) => {
 
     // console.log(drone.serialNumber._text)
     if (existingDrone === null) {
-      const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
       // 1. find a pilot
+      // const pilot = await fetchPilot(drone.serialNumber._text)
+      const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
+      // console.log('PILOT', pilot)
 
       let createdDr
       if (pilot) {
@@ -79,7 +81,8 @@ const saveDrones = async (drones) => {
       console.log('DRONE TO UPDATE', drone)
 
       const pilotForUpdate = drone.pilot ? drone.pilot : undefined
-      await prisma.drone.update({
+      // const pilotForUpdate = drone.pilot ? drone.pilot : await fetchPilot(drone.serialNumber._text)
+      await prisma.drone.updateMany({
         where: {
           serialNumber: drone.serialNumber._text,
         },
@@ -108,14 +111,6 @@ const deleteDrones = async () => {
 
   const dronesFiltered = drones.filter((drone) => new Date(dateNow) - drone.lastSavedAt > 10)
 
-  // dronesFiltered.map(async (drone) => {
-  //   await prisma.drone.delete({
-  //     where: {
-  //       serialNumber: drone.serialNumber,
-  //     },
-  //   })
-  // })
-
   await prisma.drone.deleteMany({
     where: {
       serialNumber: {
@@ -125,6 +120,12 @@ const deleteDrones = async () => {
   })
 
   // console.log('SHOULD BE DELETED')
+}
+
+const fetchPilot = async (serialNumber) => {
+  const pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`)
+  if (!pilot) return undefined
+  else return pilot
 }
 
 module.exports = { filterPosition, saveDrones, deleteDrones }

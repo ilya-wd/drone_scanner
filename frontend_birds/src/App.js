@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        <h3>Pilots</h3>
+        <h3>Pilots TOTAL NOW: {pilots.length}</h3>
         {pilots.map((pilot) => (
           <div key={pilot.id}>
             {pilot.id} | {pilot.email} | {pilot.droneId}
@@ -32,10 +32,10 @@ function App() {
         ))}
       </div>
       <div>
-        <h3>Drones</h3>
+        <h3>Drones TOTAL NOW: {drones.length}</h3>
         {drones.map((drone) => (
           <div key={drone.id}>
-            {drone.id} | {drone.serialNumber} | {drone.lastSavedAt}{' '}
+            {drone.id} | {drone.serialNumber} | {drone.lastSavedAt}
           </div>
         ))}
       </div>
