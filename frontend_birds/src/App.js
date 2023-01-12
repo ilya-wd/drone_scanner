@@ -74,6 +74,8 @@ const CircleS = ({ drones }) => {
 function App() {
   const [drones, setDrones] = useState([])
   const [pilots, setPilots] = useState([])
+  const [perpetrators, setPerpetrators] = useState([])
+  const [unidentifiedPerpetrators, setUnidentifiedPerpetrators] = useState([])
 
   useEffect(() => {
     droneService.getAllDrones().then((drones) => {
@@ -87,24 +89,46 @@ function App() {
     })
   }, [])
 
+  useEffect(() => {
+    droneService.getPerpetrators().then((perpetrators) => {
+      setPerpetrators(perpetrators.filter((p) => p.pilot !== undefined))
+      setUnidentifiedPerpetrators(perpetrators.filter((p) => p.pilot === undefined))
+    })
+  }, [])
+
   return (
     <div className="App">
-      <div>
+      {/* <div>
         <h3>Pilots TOTAL NOW: {pilots.length}</h3>
         {pilots.map((pilot) => (
           <div key={pilot.id}>
-            {pilot.id} | {pilot.email} | {pilot.droneId}
+            {pilot.id} | {pilot.email}
+          </div>
+        ))}
+      </div> */}
+      <div>
+        <h3>Perps TOTAL NOW: {perpetrators.length}</h3>
+        {perpetrators.map((perpetrator) => (
+          <div key={perpetrator.pilot.id}>
+            {perpetrator.pilot.name} | {perpetrator.pilot.email} |{perpetrator.pilot.phoneNumber} | {(perpetrator.closestDistance / 100).toFixed(2) + 'm'}
           </div>
         ))}
       </div>
       <div>
+        <h3>Unknown Perpetrators TOTAL NOW: {unidentifiedPerpetrators.length}</h3>
+        {unidentifiedPerpetrators.map((perpetrator) => (
+          <div key={perpetrator.serialNumber}>{perpetrator.serialNumber} | 'Name unknown'</div>
+        ))}
+      </div>
+
+      {/* <div>
         <h3>Drones TOTAL NOW: {drones.length}</h3>
         {drones.map((drone) => (
           <div key={drone.id}>
             {drone.id} | {drone.serialNumber} | {drone.lastSavedAt} | {drone.currentDistance} | {drone.closestDistance}
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div>Current time: {new Date(Date.now()).toISOString()}</div>
       <div>
