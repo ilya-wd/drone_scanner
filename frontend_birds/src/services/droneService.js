@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 // const prisma = new PrismaClient()
-const baseUrl = '/api/drones'
+const baseUrl = 'http://localhost:3030/api/drones'
 
 const getAllDrones = async () => {
   const request = await axios.get(`${baseUrl}/get_drones`)
-  // console.log('REQUEST', request.data)
+  console.log('drones: ', request.data)
   // return request.then((response) => response.data)
   return request.data
 }

@@ -7,6 +7,14 @@ import Drone from './components/Drone'
 import { Stage, Layer, Rect, Text, Circle } from 'react-konva'
 import Konva from 'konva'
 
+// "scripts": {
+//   "start": "set PORT=3030 && react-scripts start",
+//   "build": "react-scripts build",
+//   "test": "react-scripts test",
+//   "eject": "react-scripts eject"
+// },
+// "proxy": "http://localhost:3030",
+
 const CircleS = ({ drones }) => {
   const style = {
     margin: 3,

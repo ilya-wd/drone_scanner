@@ -6,7 +6,8 @@ const cors = require('cors')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 var cron = require('node-cron')
-const { deleteDrones } = require('./utils/drone_helper')
+const { deleteDrones, sleep, filterPosition, saveDrones } = require('./utils/drone_helper')
+const convert = require('xml-js')
 
 const app = express()
 
@@ -28,22 +29,25 @@ app.use('/api/pilots', pilotsRouter)
 //   await axios.get('http://localhost:3030/api/drones/scan')
 // })
 
-const cronScan = cron.schedule('20/* * * * * *', () => {
+let i = 0
+const cronScan = cron.schedule('*/2 * * * * *', () => {
+  i += 1
+  console.log('--- REQ ---', i)
+  testingF()
+})
+
+const testingF = () => {
   axios
-    .get('http://localhost:3030/api/drones/scan')
-    .then((res) => {
-      console.log('SCANNING')
-    })
+    .get('https://assignments.reaktor.com/birdnest/drones')
+    .then((drones) => JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 })))
+    .then((data) => data.report.capture.drone.filter((x) => filterPosition(x)))
+    .then((filteredDrones) => saveDrones(filteredDrones))
+    // .then((savedDrones) => console.log('SAVED DRONES', savedDrones))
     .catch((error) => {
       console.log(error)
       sleep(5)
     })
-})
-
-// const cronDelete = cron.schedule('3 * * * * *', () => {
-//   console.log('DRONES DELETED')
-//   deleteDrones()
-// })
+}
 
 app.use(middleware.unknownEndpoint)
 
