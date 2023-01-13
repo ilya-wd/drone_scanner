@@ -9,7 +9,6 @@ const getAllDrones = async () => {
 
 const getPerpetrators = async () => {
   const request = await axios.get(`${baseUrl}/get_perpetrators`)
-  console.log(request.data)
   return request.data
 }
 

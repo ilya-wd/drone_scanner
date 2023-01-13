@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 const filterPosition = (drone) => {
   const distance = calculateDistance(drone)
-  console.log(distance < 100000)
+  // console.log(distance < 100000)
   return distance < 100000
 }
 
@@ -21,7 +21,9 @@ const saveDrones = async (drones) => {
   for await (const drone of drones) {
     let pilot
     try {
-      pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`)
+      pilot = await axios.get(
+        `https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`
+      )
     } catch (e) {
       console.log('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
       console.log(e)
@@ -37,7 +39,10 @@ const saveDrones = async (drones) => {
         update: {
           lastSavedAt: new Date(),
           currentDistance: calculateDistance(drone),
-          closestDistance: calculateDistance(drone) < drone.closestDistance ? calculateDistance(drone) : drone.closestDistance,
+          closestDistance:
+            calculateDistance(drone) < drone.closestDistance
+              ? calculateDistance(drone)
+              : drone.closestDistance,
         },
         create: {
           serialNumber: drone.serialNumber._text,
@@ -69,18 +74,14 @@ const saveDrones = async (drones) => {
       console.log(e)
       console.log('!!!!!!!!!!!!!!!!!')
     }
-    console.log('CREATED', createdDr)
+    // console.log('CREATED', createdDr)
     createdDr
   }
 }
 
 const deleteDrones = async () => {
-  console.log('DELETING')
+  // console.log('DELETING')
   const drones = await prisma.drone.findMany({})
-  // const dateNow = new Date(Date.now()).toISOString()
-  // const now = new Date()
-  // const tenMinutes = 60 * 10 * 1000
-  // const dronesFiltered = drones.filter((drone) => now - drone.lastSavedAt > tenMinutes)
   const dronesFiltered = filterDrones(drones)
   await prisma.drone.deleteMany({
     where: {
@@ -91,7 +92,7 @@ const deleteDrones = async () => {
   })
 }
 
-const filterDrones = (dronesToFilter) => {
+const filterDronesTime = (dronesToFilter) => {
   const now = new Date()
   const tenMinutes = 60 * 10 * 1000
   const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt < tenMinutes)
@@ -105,7 +106,9 @@ const fetchPilot = (serialNumber) => {
       return pilot
     })
     .catch((error) => {
-      console.log(`Couldnt fetch a pilot at https://assignments.reaktor.com/birdnest/pilots/${serialNumber}, ${error}`)
+      console.log(
+        `Couldnt fetch a pilot at https://assignments.reaktor.com/birdnest/pilots/${serialNumber}, ${error}`
+      )
       undefined
     })
 }
@@ -127,4 +130,4 @@ const droneScan = () => {
     })
 }
 
-module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan, filterDrones }
+module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan, filterDronesTime }

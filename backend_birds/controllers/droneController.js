@@ -1,7 +1,7 @@
 const dronesRouter = require('express').Router()
 const logger = require('../utils/logger')
 const { PrismaClient } = require('@prisma/client')
-const { filterPosition, saveDrones, filterDrones } = require('../utils/drone_helper')
+const { filterPosition, saveDrones, filterDronesTime } = require('../utils/drone_helper')
 const axios = require('axios')
 const convert = require('xml-js')
 
@@ -21,24 +21,30 @@ dronesRouter.get('/cleandb', async (request, response) => {
 
 dronesRouter.get('/get_drones', async (request, response) => {
   const drones = await prisma.drone.findMany({})
-  response.json(drones)
+  response.json(filterDronesTime(drones))
 })
 
 dronesRouter.get('/get_perpetrators', async (request, response) => {
   const drones = await prisma.drone.findMany({})
   const pilots = await prisma.pilot.findMany({})
-  const filteredMatchedDrones = filterDrones(drones).map((drone) => ({ ...drone, pilot: pilots.find((p) => p.droneId === drone.id) }))
+  const filteredMatchedDrones = filterDronesTime(drones).map((drone) => ({
+    ...drone,
+    pilot: pilots.find((p) => p.droneId === drone.id),
+  }))
   response.json(filteredMatchedDrones)
 })
 
 dronesRouter.get('/get_unknown', async (request, response) => {
   const drones = await prisma.drone.findMany({})
   const pilots = await prisma.pilot.findMany({})
-  const matchedDrones = drones.map((drone) => ({ ...drone, pilot: pilots.find((p) => p.droneId === drone.id) }))
+  const matchedDrones = drones.map((drone) => ({
+    ...drone,
+    pilot: pilots.find((p) => p.droneId === drone.id),
+  }))
   const totalDrones = matchedDrones.length
   const totalUnknown = matchedDrones.filter((drone) => drone.pilot === undefined).length
-  console.log('TOTAL DRONES', totalDrones)
-  console.log('TOTAL UNKNOWN', totalUnknown)
+  // console.log('TOTAL DRONES', totalDrones)
+  // console.log('TOTAL UNKNOWN', totalUnknown)
   // response.json(res)
 })
 
