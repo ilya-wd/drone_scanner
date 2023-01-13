@@ -3,7 +3,7 @@ import './App.css'
 import { useEffect, useState } from 'react'
 import droneService from './services/droneService'
 import pilotService from './services/pilotService'
-import Drone from './components/Drone'
+import InfoTable from './components/infoTable'
 import { Stage, Layer, Rect, Text, Circle } from 'react-konva'
 import Konva from 'konva'
 
@@ -14,62 +14,6 @@ import Konva from 'konva'
 //   "eject": "react-scripts eject"
 // },
 // "proxy": "http://localhost:3030",
-
-const CircleS = ({ drones }) => {
-  const style = {
-    margin: 3,
-  }
-
-  // var stage = new Konva.Stage({
-  //   container: 'container', // id of container <div>
-  //   width: 500,
-  //   height: 500,
-  // })
-
-  // // then create layer
-  // var layer = new Konva.Layer()
-
-  // // create our shape
-  // var circle = new Konva.Circle({
-  //   x: stage.width() / 2,
-  //   y: stage.height() / 2,
-  //   radius: 70,
-  //   fill: 'red',
-  //   stroke: 'black',
-  //   strokeWidth: 4,
-  // })
-
-  // // add the shape to the layer
-  // layer.add(circle)
-
-  // // add the layer to the stage
-  // stage.add(layer)
-
-  // // draw the image
-  // layer.draw()
-
-  // state = {
-  //   color: 'green',
-  // // };
-  // handleClick = () => {
-  //   this.setState({
-  //     color: Konva.Util.getRandomColor(),
-  //   });
-  // };
-
-  // return <Circle x={250} y={250} width={50} height={50} fill={'red'} radius={70} />
-  const [circles, setCircles] = useState([{ x: 100, y: 100 }])
-  // #75bf83 - NDZ
-  // #3d036b - Drones
-  return (
-    <Stage width={1000} height={1000}>
-      <Layer>
-        <Circle x={500} y={500} radius={70} fill={'#BD9FF9'} stroke={'#5707F5'} strokeWidth={4} />
-        <Circle x={100} y={100} radius={20} fill={'#75bf83'} stroke={'#3d036b'} strokeWidth={4} />
-      </Layer>
-    </Stage>
-  )
-}
 
 function App() {
   const [drones, setDrones] = useState([])
@@ -96,46 +40,37 @@ function App() {
     })
   }, [])
 
+  const totalDrones = drones.length
+  const totalUnknown = drones.filter((drone) => drone.pilot === undefined).length
+
   return (
     <div className="App">
-      {/* <div>
-        <h3>Pilots TOTAL NOW: {pilots.length}</h3>
-        {pilots.map((pilot) => (
-          <div key={pilot.id}>
-            {pilot.id} | {pilot.email}
-          </div>
-        ))}
-      </div> */}
       <div>
-        <h3>Perps TOTAL NOW: {perpetrators.length}</h3>
-        {perpetrators.map((perpetrator) => (
-          <div key={perpetrator.pilot.id}>
-            {perpetrator.pilot.name} | {perpetrator.pilot.email} |{perpetrator.pilot.phoneNumber} | {(perpetrator.closestDistance / 100).toFixed(2) + 'm'}
-          </div>
-        ))}
+        <InfoTable knownDrones={perpetrators} unknownDrones={unidentifiedPerpetrators} />
       </div>
-      <div>
-        <h3>Unknown Perpetrators TOTAL NOW: {unidentifiedPerpetrators.length}</h3>
-        {unidentifiedPerpetrators.map((perpetrator) => (
-          <div key={perpetrator.serialNumber}>{perpetrator.serialNumber} | 'Name unknown'</div>
-        ))}
-      </div>
-
-      {/* <div>
-        <h3>Drones TOTAL NOW: {drones.length}</h3>
-        {drones.map((drone) => (
-          <div key={drone.id}>
-            {drone.id} | {drone.serialNumber} | {drone.lastSavedAt} | {drone.currentDistance} | {drone.closestDistance}
-          </div>
-        ))}
-      </div> */}
 
       <div>Current time: {new Date(Date.now()).toISOString()}</div>
-      <div>
-        <CircleS />
-      </div>
     </div>
   )
 }
 
 export default App
+
+{
+  /* <h3>Unknown Perpetrators TOTAL NOW: {unidentifiedPerpetrators.length}</h3>
+{unidentifiedPerpetrators.map((perpetrator) => (
+  <div key={perpetrator.serialNumber}>
+    {perpetrator.serialNumber} | Name of the pilot is unknown
+  </div>
+))} */
+}
+
+{
+  /* <h3>Perps TOTAL NOW: {perpetrators.length}</h3>
+{perpetrators.map((perpetrator) => (
+  <div key={perpetrator.pilot.id}>
+    {perpetrator.pilot.name} | {perpetrator.pilot.email} |{perpetrator.pilot.phoneNumber} |
+    {(perpetrator.closestDistance / 1000).toFixed(2) + 'm'}
+  </div>
+))} */
+}

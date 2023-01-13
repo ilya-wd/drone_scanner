@@ -31,4 +31,15 @@ dronesRouter.get('/get_perpetrators', async (request, response) => {
   response.json(filteredMatchedDrones)
 })
 
+dronesRouter.get('/get_unknown', async (request, response) => {
+  const drones = await prisma.drone.findMany({})
+  const pilots = await prisma.pilot.findMany({})
+  const matchedDrones = drones.map((drone) => ({ ...drone, pilot: pilots.find((p) => p.droneId === drone.id) }))
+  const totalDrones = matchedDrones.length
+  const totalUnknown = matchedDrones.filter((drone) => drone.pilot === undefined).length
+  console.log('TOTAL DRONES', totalDrones)
+  console.log('TOTAL UNKNOWN', totalUnknown)
+  // response.json(res)
+})
+
 module.exports = dronesRouter
