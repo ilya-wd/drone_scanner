@@ -35,7 +35,8 @@ function App() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
   const { data, error, isLoading } = useSWR(
-    'http://localhost:3030/api/drones/get_perpetrators',
+    // 'http://localhost:3030/api/drones/get_perpetrators',
+    '/api/drones/get_perpetrators',
     fetcher,
     { refreshInterval: 1000 }
   )

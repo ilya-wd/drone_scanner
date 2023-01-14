@@ -1,0 +1,30 @@
+# flyctl launch added from .gitignore
+**/node_modules
+**/package-lock.json
+**/.env
+
+# flyctl launch added from frontend_birds/.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+frontend_birds/node_modules
+frontend_birds/.pnp
+frontend_birds/**/.pnp.js
+
+# testing
+frontend_birds/coverage
+
+# production
+frontend_birds/build
+
+# misc
+frontend_birds/**/.DS_Store
+frontend_birds/**/.env.local
+frontend_birds/**/.env.development.local
+frontend_birds/**/.env.test.local
+frontend_birds/**/.env.production.local
+
+frontend_birds/**/npm-debug.log*
+frontend_birds/**/yarn-debug.log*
+frontend_birds/**/yarn-error.log*
+fly.toml
