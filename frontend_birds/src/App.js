@@ -1,14 +1,9 @@
-import logo from './logo.svg'
 import './App.css'
-import { useEffect, useState } from 'react'
-import droneService from './services/droneService'
-import pilotService from './services/pilotService'
 import InfoTable from './components/InfoTable'
-import { Stage, Layer, Rect, Text, Circle } from 'react-konva'
-import Konva from 'konva'
 import Map from './components/Map'
-import useSWR from 'swr'
+import WelcomeMsg from './components/WelcomeMsg'
 
+import useSWR from 'swr'
 // "scripts": {
 //   "start": "set PORT=3030 && react-scripts start",
 //   "build": "react-scripts build",
@@ -46,9 +41,9 @@ function App() {
   )
   let unidentifiedPerpetrators, perpetrators
 
-  if (error) return <div>failed to load</div>
+  if (error) return <h1>failed to load</h1>
   if (!data) {
-    return <div>loading...</div>
+    return <h1>loading...</h1>
   } else {
     perpetrators = data.filter((p) => p.pilot !== undefined)
     unidentifiedPerpetrators = data.filter((p) => p.pilot === undefined)
@@ -61,21 +56,17 @@ function App() {
   //   })
   // }, [data])
 
-  // const totalDrones = drones.length
-  // const totalUnknown = drones.filter((drone) => drone.pilot === undefined).length
-
   return (
     <div className="App">
       <div>
+        <WelcomeMsg />
+        <Map drones={perpetrators} />
         <InfoTable
           knownDrones={perpetrators}
           unknownDrones={unidentifiedPerpetrators}
           time={timeNow}
         />
       </div>
-
-      <Map drones={perpetrators} />
-      <div>Current time: {new Date(Date.now()).toISOString()}</div>
     </div>
   )
 }

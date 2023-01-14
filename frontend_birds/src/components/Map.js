@@ -1,6 +1,5 @@
 import Plot from 'react-plotly.js'
 
-// const Map = ({ drones }) => {
 const Map = ({ drones }) => {
   const dronesInNDZ = {
     type: 'scatter',
@@ -10,20 +9,12 @@ const Map = ({ drones }) => {
     marker: { color: 'red', size: [] },
   }
 
-  // const dronesOutsideNDZ = {
-  //   type: 'scatter',
-  //   mode: 'markers',
-  //   x: [],
-  //   y: [],
-  //   marker: { color: 'green', size: [10] },
-  // }
-
   const nestArea = {
     type: 'scatter',
     mode: 'markers',
     x: [250],
     y: [250],
-    marker: { color: 'blue', size: [300] },
+    marker: { color: 'blue', size: [250] },
   }
 
   const nest = {
@@ -67,16 +58,18 @@ const Map = ({ drones }) => {
   const plotLayout = {
     showlegend: false,
     autosize: false,
-    width: 1000,
-    height: 1000,
+    width: 700,
+    height: 700,
     title: 'Map of drones in NDZ',
     margin: {
-      l: 100,
-      r: 100,
-      b: 100,
-      t: 100,
+      l: 50,
+      r: 50,
+      b: 50,
+      t: 50,
       pad: 4,
     },
+    paper_bgcolor: 'rgba(0, 0, 0, 0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
   }
 
   const plotConfig = {
@@ -84,7 +77,7 @@ const Map = ({ drones }) => {
     staticPlot: true,
   }
 
-  return <Plot data={plotData} layout={plotLayout} config={plotConfig} />
+  return <Plot class="map" data={plotData} layout={plotLayout} config={plotConfig} />
 }
 
 export default Map
