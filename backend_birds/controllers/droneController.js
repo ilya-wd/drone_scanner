@@ -1,6 +1,6 @@
 const dronesRouter = require('express').Router()
 const { PrismaClient } = require('@prisma/client')
-const { filterPosition, saveDrones, filterDronesRecent } = require('../utils/drone_helper')
+const { filterPosition, saveDrones } = require('../utils/drone_helper')
 const axios = require('axios')
 const convert = require('xml-js')
 
@@ -14,15 +14,21 @@ dronesRouter.get('/scan', async (request, response) => {
   saveDrones(filteredDrones)
 })
 
-dronesRouter.get('/get_drones', async (request, response) => {
-  const drones = await prisma.drone.findMany({})
-  response.json(filterDronesRecent(drones))
-})
-
 dronesRouter.get('/get_perpetrators', async (request, response) => {
-  const drones = await prisma.drone.findMany({})
+  const now = new Date()
+  const tenMinutes = 60 * 10 * 1000
+  const drones = await prisma.drone.findMany({
+    where: {
+      lastSavedAt: {
+        gt: new Date(now - tenMinutes),
+      },
+    },
+    orderBy: {
+      lastSavedAt: 'asc',
+    },
+  })
   const pilots = await prisma.pilot.findMany({})
-  const filteredMatchedDrones = filterDronesRecent(drones).map((drone) => ({
+  const filteredMatchedDrones = drones.map((drone) => ({
     ...drone,
     pilot: pilots.find((p) => p.droneId === drone.id),
   }))

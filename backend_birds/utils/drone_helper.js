@@ -23,9 +23,9 @@ const saveDrones = async (drones) => {
         `https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`
       )
     } catch (e) {
-      console.log('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
-      console.log(e)
-      console.log('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
+      console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
+      console.error(e)
+      console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
     }
 
     try {
@@ -68,36 +68,27 @@ const saveDrones = async (drones) => {
         },
       })
     } catch (e) {
-      console.log(e)
-      console.log('!!!!!!!!!!!!!!!!!')
+      console.error(e)
+      console.warn('!!!!!!!!!!!!!!!!!')
     }
   }
 }
 
 const deleteDrones = async () => {
-  const drones = await prisma.drone.findMany({})
-  const dronesFiltered = filterDronesOld(drones)
-  await prisma.drone.deleteMany({
+  const drones = await prisma.drone.findMany({
     where: {
-      serialNumber: {
-        in: dronesFiltered.map((d) => d.serialNumber),
+      lastSavedAt: {
+        lt: new Date(now - tenMinutes),
       },
     },
   })
-}
-
-const filterDronesRecent = (dronesToFilter) => {
-  const now = new Date()
-  const tenMinutes = 60 * 10 * 1000
-  const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt < tenMinutes)
-  return dronesFiltered
-}
-
-const filterDronesOld = (dronesToFilter) => {
-  const now = new Date()
-  const tenMinutes = 60 * 10 * 1000
-  const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt > tenMinutes)
-  return dronesFiltered
+  await prisma.drone.deleteMany({
+    where: {
+      serialNumber: {
+        in: drones.map((d) => d.serialNumber),
+      },
+    },
+  })
 }
 
 const sleep = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))
@@ -109,11 +100,11 @@ const droneScan = () => {
     .then((data) => data.report.capture.drone.filter((x) => filterPosition(x)))
     .then((filteredDrones) => saveDrones(filteredDrones))
     .catch((error) => {
-      console.log('SCANNING SCANNING SCANNING')
-      console.log(error)
-      console.log('SCANNING SCANNING SCANNING')
+      console.warn('SCANNING SCANNING SCANNING')
+      console.error(error)
+      console.warn('SCANNING SCANNING SCANNING')
       sleep(5)
     })
 }
 
-module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan, filterDronesRecent }
+module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan }
