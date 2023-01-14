@@ -17,7 +17,6 @@ const calculateDistance = (drone) => {
 }
 
 const saveDrones = async (drones) => {
-  // drones.forEach(async (drone) => {
   for await (const drone of drones) {
     let pilot
     try {
@@ -82,7 +81,7 @@ const saveDrones = async (drones) => {
 const deleteDrones = async () => {
   // console.log('DELETING')
   const drones = await prisma.drone.findMany({})
-  const dronesFiltered = filterDrones(drones)
+  const dronesFiltered = filterDronesOld(drones)
   await prisma.drone.deleteMany({
     where: {
       serialNumber: {
@@ -92,10 +91,17 @@ const deleteDrones = async () => {
   })
 }
 
-const filterDronesTime = (dronesToFilter) => {
+const filterDronesRecent = (dronesToFilter) => {
   const now = new Date()
   const tenMinutes = 60 * 10 * 1000
   const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt < tenMinutes)
+  return dronesFiltered
+}
+
+const filterDronesOld = (dronesToFilter) => {
+  const now = new Date()
+  const tenMinutes = 60 * 10 * 1000
+  const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt > tenMinutes)
   return dronesFiltered
 }
 
@@ -130,4 +136,4 @@ const droneScan = () => {
     })
 }
 
-module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan, filterDronesTime }
+module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan, filterDronesRecent }

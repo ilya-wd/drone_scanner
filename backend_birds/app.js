@@ -10,12 +10,6 @@ const { cronScan, cronDelete } = require('./utils/cronTasks')
 
 const app = express()
 
-// const port = process.env.PORT || '3000'
-
-// app.listen(port, () => {
-//   console.log(`Server Running at ${port} 🚀`)
-// })
-
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
@@ -23,7 +17,7 @@ app.use(middleware.requestLogger)
 app.use('/api/drones', dronesRouter)
 app.use('/api/pilots', pilotsRouter)
 
-// cronDelete()
+cronDelete()
 cronScan()
 
 app.use(middleware.unknownEndpoint)
