@@ -6,33 +6,13 @@ import WelcomeMsg from './components/WelcomeMsg'
 import useSWR from 'swr'
 
 function App() {
-  // const [drones, setDrones] = useState([])
-  // const [pilots, setPilots] = useState([])
-  // const [perpetrators, setPerpetrators] = useState([])
-  // const [unidentifiedPerpetrators, setUnidentifiedPerpetrators] = useState([])
-
-  // useEffect(() => {
-  //   droneService.getAllDrones().then((drones) => {
-  //     setDrones(drones)
-  //   })
-  // }, [])
-
-  // useEffect(() => {
-  //   pilotService.getAllPilots().then((pilots) => {
-  //     setPilots(pilots)
-  //   })
-  // }, [])
-
   const timeNow = new Date()
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-  const { data, error, isLoading } = useSWR(
-    // 'http://localhost:3030/api/drones/get_perpetrators',
-    '/api/drones/get_perpetrators',
-    fetcher,
-    { refreshInterval: 1000 }
-  )
+  const { data, error, isLoading } = useSWR('/api/drones/get_perpetrators', fetcher, {
+    refreshInterval: 1000,
+  })
   let unidentifiedPerpetrators, perpetrators
 
   if (error) return <h1>failed to load</h1>
@@ -43,16 +23,10 @@ function App() {
     unidentifiedPerpetrators = data.filter((p) => p.pilot === undefined)
   }
 
-  // useEffect(() => {
-  //   droneService.getPerpetrators().then((perpetrators) => {
-  //     setPerpetrators(perpetrators.filter((p) => p.pilot !== undefined))
-  //     setUnidentifiedPerpetrators(perpetrators.filter((p) => p.pilot === undefined))
-  //   })
-  // }, [data])
-
   return (
     <div className="App">
       <div>
+        <h1>HELLO WORLD !!! </h1>
         <WelcomeMsg />
         <Map drones={perpetrators} />
         <InfoTable
