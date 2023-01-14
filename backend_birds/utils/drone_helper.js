@@ -29,9 +29,9 @@ const saveDrones = async (drones) => {
       console.log('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
     }
     // const pilot = fetchPilot(drone.serialNumber._text)
-    let createdDr
+
     try {
-      createdDr = await prisma.drone.upsert({
+      await prisma.drone.upsert({
         where: {
           serialNumber: drone.serialNumber._text,
         },

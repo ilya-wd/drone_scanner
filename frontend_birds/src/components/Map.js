@@ -77,7 +77,7 @@ const Map = ({ drones }) => {
     staticPlot: true,
   }
 
-  return <Plot class="map" data={plotData} layout={plotLayout} config={plotConfig} />
+  return <Plot class="map column" data={plotData} layout={plotLayout} config={plotConfig} />
 }
 
 export default Map

@@ -1,11 +1,9 @@
 const dronesRouter = require('./controllers/droneController')
 const pilotsRouter = require('./controllers/pilotController')
-const axios = require('axios')
 const express = require('express')
 const cors = require('cors')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
-var cron = require('node-cron')
 const { cronScan, cronDelete } = require('./utils/cronTasks')
 
 const app = express()
