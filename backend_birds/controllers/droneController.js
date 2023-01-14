@@ -1,10 +1,8 @@
-const dronesRouter = require('express').Router()
-const { PrismaClient } = require('@prisma/client')
 const { filterPosition, saveDrones } = require('../utils/drone_helper')
+const { prisma } = require('../prisma/prismaClient')
+const dronesRouter = require('express').Router()
 const axios = require('axios')
 const convert = require('xml-js')
-
-const prisma = new PrismaClient()
 
 dronesRouter.get('/scan', async (request, response) => {
   const drones = await axios.get('https://assignments.reaktor.com/birdnest/drones')

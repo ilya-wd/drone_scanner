@@ -1,8 +1,6 @@
-const { PrismaClient } = require('@prisma/client')
 const axios = require('axios')
 const convert = require('xml-js')
-
-const prisma = new PrismaClient()
+const { prisma } = require('../prisma/prismaClient')
 
 const filterPosition = (drone) => {
   const distance = calculateDistance(drone)
