@@ -1,5 +1,4 @@
 const dronesRouter = require('express').Router()
-const logger = require('../utils/logger')
 const { PrismaClient } = require('@prisma/client')
 const { filterPosition, saveDrones, filterDronesRecent } = require('../utils/drone_helper')
 const axios = require('axios')
@@ -15,6 +14,7 @@ dronesRouter.get('/scan', async (request, response) => {
   saveDrones(filteredDrones)
 })
 
+// Commented out so that it isn't exploited
 // dronesRouter.get('/cleandb', async (request, response) => {
 //   await prisma.drone.deleteMany({})
 // })

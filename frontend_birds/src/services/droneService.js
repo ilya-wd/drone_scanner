@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-// const baseUrl = 'http://localhost:3030/api/drones'
 const baseUrl =
   process.env.NODE_ENV === 'development' ? '/api/drones' : 'http://localhost:3030/api/drones'
 

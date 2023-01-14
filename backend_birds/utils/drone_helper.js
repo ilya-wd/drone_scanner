@@ -127,7 +127,6 @@ const droneScan = () => {
     .then((drones) => JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 })))
     .then((data) => data.report.capture.drone.filter((x) => filterPosition(x)))
     .then((filteredDrones) => saveDrones(filteredDrones))
-    // .then((savedDrones) => console.log('SAVED DRONES', savedDrones))
     .catch((error) => {
       console.log('SCANNING SCANNING SCANNING')
       console.log(error)

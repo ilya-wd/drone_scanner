@@ -4,13 +4,6 @@ import Map from './components/Map'
 import WelcomeMsg from './components/WelcomeMsg'
 
 import useSWR from 'swr'
-// "scripts": {
-//   "start": "set PORT=3030 && react-scripts start",
-//   "build": "react-scripts build",
-//   "test": "react-scripts test",
-//   "eject": "react-scripts eject"
-// },
-// "proxy": "http://localhost:3030",
 
 function App() {
   // const [drones, setDrones] = useState([])
