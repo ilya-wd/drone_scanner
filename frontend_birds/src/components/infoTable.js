@@ -1,9 +1,9 @@
 import { Table } from 'react-bootstrap'
 
-const KnownDrone = ({ drone }) => {
-  const now = new Date()
-  const lastSavedMinutes = Math.floor((now - new Date(drone.lastSavedAt)) / 1000 / 60)
-  const lastSavedSec = Math.floor((now - new Date(drone.lastSavedAt)) / 1000) % 60
+const KnownDrone = ({ drone, time }) => {
+  // const now = new Date()
+  const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
+  const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
   return (
     <tr key={drone.id}>
@@ -32,9 +32,10 @@ const KnownDrone = ({ drone }) => {
   )
 }
 
-const UnknownDrone = ({ drone }) => {
-  const now = new Date()
-  const lastSavedMinutes = Math.floor((now - new Date(drone.lastSavedAt)) / 1000 / 60)
+const UnknownDrone = ({ drone, time }) => {
+  // const now = new Date()
+  const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
+  const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
   const styleUknownDrone = {
     backgroundColor: '#FFD4E2',
@@ -49,7 +50,9 @@ const UnknownDrone = ({ drone }) => {
           have any information about the owner.
         </p>
       </td>
-      <td>{lastSavedMinutes} minutes ago</td>
+      <td>
+        {lastSavedMinutes} minutes {lastSavedSec} seconds ago
+      </td>
     </tr>
   )
 }
@@ -82,7 +85,7 @@ const NoPilotUnknown = ({}) => {
   )
 }
 
-const InfoTable = ({ knownDrones, unknownDrones }) => {
+const InfoTable = ({ knownDrones, unknownDrones, time }) => {
   const styleTable = {
     marginTop: 10,
   }
@@ -101,12 +104,12 @@ const InfoTable = ({ knownDrones, unknownDrones }) => {
         </thead>
         <tbody>
           {knownDrones ? (
-            knownDrones.map((drone) => <KnownDrone drone={drone} />)
+            knownDrones.map((drone) => <KnownDrone drone={drone} time={time} />)
           ) : (
             <NoPilotKnown />
           )}
           {unknownDrones ? (
-            unknownDrones.map((drone) => <UnknownDrone drone={drone} />)
+            unknownDrones.map((drone) => <UnknownDrone drone={drone} time={time} />)
           ) : (
             <NoPilotUnknown />
           )}

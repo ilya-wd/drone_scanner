@@ -75,7 +75,7 @@ const saveDrones = async (drones) => {
       console.log('!!!!!!!!!!!!!!!!!')
     }
     // console.log('CREATED', createdDr)
-    createdDr
+    // createdDr
   }
 }
 

@@ -23,7 +23,7 @@ const Map = ({ drones }) => {
     mode: 'markers',
     x: [250],
     y: [250],
-    marker: { color: 'blue', size: [400] },
+    marker: { color: 'blue', size: [300] },
   }
 
   const nest = {
@@ -42,6 +42,14 @@ const Map = ({ drones }) => {
     marker: { color: 'white', size: [0.5] },
   }
 
+  const coordinatesOrigin = {
+    type: 'scatter',
+    mode: 'markers',
+    x: [0],
+    y: [0],
+    marker: { color: 'white', size: [0.5] },
+  }
+
   if (drones.length > 0) {
     drones.map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
@@ -52,7 +60,7 @@ const Map = ({ drones }) => {
     })
   }
 
-  const plotData = [nestArea, dronesInNDZ, nest, furthermostCorner]
+  const plotData = [nestArea, dronesInNDZ, nest, furthermostCorner, coordinatesOrigin]
 
   // TODO: width: 100%, height: 100%
 
@@ -61,7 +69,7 @@ const Map = ({ drones }) => {
     autosize: false,
     width: 1000,
     height: 1000,
-    title: 'A Fancy Plot',
+    title: 'Map of drones in NDZ',
     margin: {
       l: 100,
       r: 100,
