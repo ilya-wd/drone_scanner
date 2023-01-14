@@ -53,8 +53,6 @@ const Map = ({ drones }) => {
 
   const plotData = [nestArea, dronesInNDZ, nest, furthermostCorner, coordinatesOrigin]
 
-  // TODO: width: 100%, height: 100%
-
   const plotLayout = {
     showlegend: false,
     autosize: false,

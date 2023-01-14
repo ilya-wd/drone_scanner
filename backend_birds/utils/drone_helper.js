@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 const filterPosition = (drone) => {
   const distance = calculateDistance(drone)
-  // console.log(distance < 100000)
   return distance < 100000
 }
 
@@ -28,7 +27,6 @@ const saveDrones = async (drones) => {
       console.log(e)
       console.log('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
     }
-    // const pilot = fetchPilot(drone.serialNumber._text)
 
     try {
       await prisma.drone.upsert({
@@ -73,13 +71,10 @@ const saveDrones = async (drones) => {
       console.log(e)
       console.log('!!!!!!!!!!!!!!!!!')
     }
-    // console.log('CREATED', createdDr)
-    // createdDr
   }
 }
 
 const deleteDrones = async () => {
-  // console.log('DELETING')
   const drones = await prisma.drone.findMany({})
   const dronesFiltered = filterDronesOld(drones)
   await prisma.drone.deleteMany({
@@ -103,20 +98,6 @@ const filterDronesOld = (dronesToFilter) => {
   const tenMinutes = 60 * 10 * 1000
   const dronesFiltered = dronesToFilter.filter((drone) => now - drone.lastSavedAt > tenMinutes)
   return dronesFiltered
-}
-
-const fetchPilot = (serialNumber) => {
-  axios
-    .get(`https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`)
-    .then((pilot) => {
-      return pilot
-    })
-    .catch((error) => {
-      console.log(
-        `Couldnt fetch a pilot at https://assignments.reaktor.com/birdnest/pilots/${serialNumber}, ${error}`
-      )
-      undefined
-    })
 }
 
 const sleep = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))

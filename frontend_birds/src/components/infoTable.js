@@ -1,7 +1,6 @@
 import { Table } from 'react-bootstrap'
 
 const KnownDrone = ({ drone, time }) => {
-  // const now = new Date()
   const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
   const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
@@ -33,7 +32,6 @@ const KnownDrone = ({ drone, time }) => {
 }
 
 const UnknownDrone = ({ drone, time }) => {
-  // const now = new Date()
   const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
   const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
