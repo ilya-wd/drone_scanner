@@ -1,12 +1,20 @@
 import Plot from 'react-plotly.js'
 
-const Map = ({ drones }) => {
+const Map = ({ perpetrators, nonPerpetrators }) => {
   const dronesInNDZ = {
     type: 'scatter',
     mode: 'markers',
     x: [],
     y: [],
     marker: { color: 'red', size: [] },
+  }
+
+  const dronesOutsideNDZ = {
+    type: 'scatter',
+    mode: 'markers',
+    x: [],
+    y: [],
+    marker: { color: 'green', size: [] },
   }
 
   const nestArea = {
@@ -41,17 +49,34 @@ const Map = ({ drones }) => {
     marker: { color: 'white', size: [0.5] },
   }
 
-  if (drones.length > 0) {
-    drones.map((drone) => {
+  if (perpetrators.length > 0) {
+    perpetrators.map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
       const yCoord = Math.round(drone.positionY / 1000)
       dronesInNDZ.x.push(xCoord)
       dronesInNDZ.y.push(yCoord)
-      dronesInNDZ.marker.size.push(30)
+      dronesInNDZ.marker.size.push(10)
     })
   }
 
-  const plotData = [nestArea, dronesInNDZ, nest, furthermostCorner, coordinatesOrigin]
+  if (nonPerpetrators.length > 0) {
+    nonPerpetrators.map((drone) => {
+      const xCoord = Math.round(drone.positionX / 1000)
+      const yCoord = Math.round(drone.positionY / 1000)
+      dronesOutsideNDZ.x.push(xCoord)
+      dronesOutsideNDZ.y.push(yCoord)
+      dronesOutsideNDZ.marker.size.push(10)
+    })
+  }
+
+  const plotData = [
+    nestArea,
+    dronesInNDZ,
+    dronesOutsideNDZ,
+    nest,
+    furthermostCorner,
+    coordinatesOrigin,
+  ]
 
   const plotLayout = {
     showlegend: false,

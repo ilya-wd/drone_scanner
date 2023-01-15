@@ -2,32 +2,36 @@ import './App.css'
 import InfoTable from './components/InfoTable'
 import Map from './components/Map'
 import WelcomeMsg from './components/WelcomeMsg'
+import Header from './components/Header'
 
 import useSWR from 'swr'
 
 function App() {
   const timeNow = new Date()
-
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
-
-  const { data, error, isLoading } = useSWR('/api/drones/get_perpetrators', fetcher, {
+  const { data, error, isLoading } = useSWR('/api/drones/get_data', fetcher, {
     refreshInterval: 1000,
   })
-  let unidentifiedPerpetrators, perpetrators
+
+  let unidentifiedPerpetrators, perpetrators, badDrones, nonPerpetrators, device
 
   if (error) return <h1>failed to load</h1>
   if (!data) {
     return <h1>loading...</h1>
   } else {
-    perpetrators = data.filter((p) => p.pilot !== undefined)
-    unidentifiedPerpetrators = data.filter((p) => p.pilot === undefined)
+    badDrones = data[0]
+    nonPerpetrators = data[1]
+    device = data[2]
+    perpetrators = badDrones.filter((p) => p.pilot !== undefined)
+    unidentifiedPerpetrators = badDrones.filter((p) => p.pilot === undefined)
   }
 
   return (
     <div className="App">
       <div>
+        <Header perpetrators={perpetrators} nonPerpetrators={nonPerpetrators} dev={device} />
         <WelcomeMsg />
-        <Map drones={perpetrators} />
+        <Map perpetrators={perpetrators} nonPerpetrators={nonPerpetrators} />
         <InfoTable
           knownDrones={perpetrators}
           unknownDrones={unidentifiedPerpetrators}
