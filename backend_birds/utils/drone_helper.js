@@ -3,9 +3,10 @@ const convert = require('xml-js')
 const { prisma } = require('../prisma/prismaClient')
 const { prismaUpsert } = require('./prismaUpsert')
 
-const filterPosition = (drone) => {
+const filterPosition = (drone, insideNDZ) => {
   const distance = calculateDistance(drone)
-  return distance < 100000
+  console.log(insideNDZ ? distance < 100000 : distance > 100000, distance)
+  return insideNDZ ? distance < 100000 : distance > 100000
 }
 
 const calculateDistance = (drone) => {
@@ -14,17 +15,19 @@ const calculateDistance = (drone) => {
   return distance
 }
 
-const saveDrones = async (drones) => {
+const saveDrones = async (drones, violated) => {
   for await (const drone of drones) {
-    let pilot
-    try {
-      pilot = await axios.get(
-        `https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`
-      )
-    } catch (e) {
-      console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
-      console.error(e)
-      console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
+    let pilot = undefined
+    if (violated) {
+      try {
+        pilot = await axios.get(
+          `https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`
+        )
+      } catch (e) {
+        console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
+        console.error(e)
+        console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
+      }
     }
 
     try {
@@ -125,8 +128,9 @@ const droneScan = () => {
     .get('https://assignments.reaktor.com/birdnest/drones')
     .then((data) => parseXml(data))
     .then((parsedData) => {
-      saveDrones(parsedData[0])
-      saveDevice(parsedData[1])
+      saveDrones(parsedData[0], true)
+      saveDrones(parsedData[1], false)
+      saveDevice(parsedData[2])
     })
     .catch((error) => {
       console.warn('SCANNING SCANNING SCANNING')
@@ -138,9 +142,10 @@ const droneScan = () => {
 
 const parseXml = (drones) => {
   const parsedData = JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 }))
-  const filteredDrones = parsedData.report.capture.drone.filter((x) => filterPosition(x))
+  const dronesInside = parsedData.report.capture.drone.filter((x) => filterPosition(x, true))
+  const droneOutside = parsedData.report.capture.drone.filter((x) => filterPosition(x, false))
   const deviceInfo = parsedData.report.deviceInformation
-  return [filteredDrones, deviceInfo]
+  return [dronesInside, droneOutside, deviceInfo]
 }
 
 module.exports = {
