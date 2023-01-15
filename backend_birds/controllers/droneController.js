@@ -1,16 +1,7 @@
-const { filterPosition, saveDrones } = require('../utils/drone_helper')
+const { saveDevice, saveDrones, parseXml } = require('../utils/drone_helper')
 const { prisma } = require('../prisma/prismaClient')
 const dronesRouter = require('express').Router()
 const axios = require('axios')
-const convert = require('xml-js')
-
-dronesRouter.get('/scan', async (request, response) => {
-  const drones = await axios.get('https://assignments.reaktor.com/birdnest/drones')
-  const data = JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 }))
-  const filteredDrones = data.report.capture.drone.filter((x) => filterPosition(x))
-
-  saveDrones(filteredDrones)
-})
 
 dronesRouter.get('/get_perpetrators', async (request, response) => {
   const now = new Date()
@@ -31,6 +22,14 @@ dronesRouter.get('/get_perpetrators', async (request, response) => {
     pilot: pilots.find((p) => p.droneId === drone.id),
   }))
   response.json(filteredMatchedDrones)
+})
+
+dronesRouter.get('/get_device', async (request, response) => {
+  const device = await prisma.device.findFirst({
+    orderBy: { lastSavedAt: 'desc' },
+  })
+
+  response.json(device)
 })
 
 module.exports = dronesRouter

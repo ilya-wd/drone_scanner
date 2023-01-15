@@ -1,59 +1,6 @@
 import { Table } from 'react-bootstrap'
-
-const KnownDrone = ({ drone, time }) => {
-  const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
-  const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
-
-  return (
-    <tr key={drone.id}>
-      <td>
-        {drone.pilot.firstName} {drone.pilot.lastName}
-      </td>
-      <td>
-        <a
-          href={
-            'mailto:' +
-            drone.pilot.email +
-            '?cc=registry.mmm@gov.fi&subject=Your drone violated NDZ!&body=Friends of Monadikuikka society informs you...'
-          }
-        >
-          {drone.pilot.email}
-        </a>
-      </td>
-      <td>
-        <a href={'tel:' + drone.pilot.phoneNumber}>{drone.pilot.phoneNumber} </a>
-      </td>
-      <td>{(drone.closestDistance / 1000).toFixed(2) + 'm'}</td>
-      <td>
-        {lastSavedMinutes} minutes {lastSavedSec} seconds ago
-      </td>
-    </tr>
-  )
-}
-
-const UnknownDrone = ({ drone, time }) => {
-  const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
-  const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
-
-  const styleUknownDrone = {
-    backgroundColor: '#FFD4E2',
-  }
-
-  return (
-    <tr style={styleUknownDrone} key={drone.id}>
-      <td colspan="4">
-        <p>
-          Owner of drone {drone.serialNumber} made by {drone.manufacturer} is not found! Please
-          contact us at <a href="monadikuikka@bird.friends">monadikuikka@bird.friends</a> if you
-          have any information about the owner.
-        </p>
-      </td>
-      <td>
-        {lastSavedMinutes} minutes {lastSavedSec} seconds ago
-      </td>
-    </tr>
-  )
-}
+import UnknownDrone from './UnknownDrone'
+import KnownDrone from './KnownDrone'
 
 const NoPilotKnown = ({}) => {
   return (
@@ -75,7 +22,7 @@ const NoPilotUnknown = ({}) => {
       <h3>
         No drones with
         <p>
-          <b>identified</b>
+          <b>unidentified</b>
         </p>
         pilots violated NDZ in the past 10 minutes
       </h3>

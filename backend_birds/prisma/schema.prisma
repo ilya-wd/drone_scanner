@@ -40,21 +40,12 @@ model Pilot {
   drone       Drone    @relation(fields: [droneId], references: [id], onDelete: Cascade)
 }
 
-// {"pilotId":"P-WXxPComjWL",
-// "firstName":"Shany",
-// "lastName":"Wilderman",
-// "phoneNumber":"+210656113860",
-// "createdDt":"2022-03-09T21:22:04.198Z",
-// "email":"shany.wilderman@example.com"}%       
-// <drone>
-//       <serialNumber>SN-MerxLE37jn</serialNumber>
-//       <model>HRP-DRP 1 S</model>
-//       <manufacturer>ProDröne Ltd</manufacturer>
-//       <mac>94:e9:d8:73:58:b0</mac>
-//       <ipv4>75.166.197.11</ipv4>
-//       <ipv6>9276:5691:7b6f:7654:940c:3018:7ec6:2b60</ipv6>
-//       <firmware>8.4.8</firmware>
-//       <positionY>316577.965963633</positionY>
-//       <positionX>404519.2113500471</positionX>
-//       <altitude>4245.955221227841</altitude>
-//     </drone>
+model Device {
+  id               Int      @id @default(autoincrement())
+  deviceId         String   @unique
+  listenRange      Int
+  deviceStarted    DateTime
+  lastSavedAt      DateTime @default(now())
+  uptimeSeconds    Int
+  updateIntervalMs Int
+}

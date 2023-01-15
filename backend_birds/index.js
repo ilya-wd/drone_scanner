@@ -6,6 +6,7 @@ const http = require('http')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const { cronScan, cronDelete } = require('./utils/cronTasks')
+const parseString = require('xml2js').parseString
 
 const app = express()
 
@@ -29,3 +30,5 @@ const server = http.createServer(app)
 server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`)
 })
+
+module.exports = { app }

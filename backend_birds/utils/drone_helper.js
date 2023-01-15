@@ -1,6 +1,7 @@
 const axios = require('axios')
 const convert = require('xml-js')
 const { prisma } = require('../prisma/prismaClient')
+const { prismaUpsert } = require('./prismaUpsert')
 
 const filterPosition = (drone) => {
   const distance = calculateDistance(drone)
@@ -27,6 +28,7 @@ const saveDrones = async (drones) => {
     }
 
     try {
+      // prismaUpsert(drone, pilot)
       await prisma.drone.upsert({
         where: {
           serialNumber: drone.serialNumber._text,
@@ -67,11 +69,38 @@ const saveDrones = async (drones) => {
       })
     } catch (e) {
       console.error(e)
-      console.warn('!!!!!!!!!!!!!!!!!')
+      console.warn('DRONE SAVING !!!!!!!!!!!!!!!')
     }
   }
 }
 
+const saveDevice = async (device) => {
+  try {
+    await prisma.device.upsert({
+      where: {
+        deviceId: device._attributes.deviceId,
+      },
+      update: {
+        listenRange: Number(device.listenRange._text),
+        uptimeSeconds: Number(device.uptimeSeconds._text),
+        updateIntervalMs: Number(device.updateIntervalMs._text),
+        deviceStarted: new Date(device.deviceStarted._text),
+      },
+      create: {
+        deviceId: device._attributes.deviceId,
+        listenRange: Number(device.listenRange._text),
+        uptimeSeconds: Number(device.uptimeSeconds._text),
+        updateIntervalMs: Number(device.updateIntervalMs._text),
+        deviceStarted: new Date(device.deviceStarted._text),
+      },
+    })
+  } catch (e) {
+    console.error(e)
+    console.warn('DEVICE SAVE !!!!!!!!!!!!!!!!')
+  }
+}
+
+// Deleting all drones that were saved more than 10 minutes ago
 const deleteDrones = async () => {
   const drones = await prisma.drone.findMany({
     where: {
@@ -94,9 +123,11 @@ const sleep = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds 
 const droneScan = () => {
   axios
     .get('https://assignments.reaktor.com/birdnest/drones')
-    .then((drones) => JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 })))
-    .then((data) => data.report.capture.drone.filter((x) => filterPosition(x)))
-    .then((filteredDrones) => saveDrones(filteredDrones))
+    .then((data) => parseXml(data))
+    .then((parsedData) => {
+      saveDrones(parsedData[0])
+      saveDevice(parsedData[1])
+    })
     .catch((error) => {
       console.warn('SCANNING SCANNING SCANNING')
       console.error(error)
@@ -105,4 +136,20 @@ const droneScan = () => {
     })
 }
 
-module.exports = { filterPosition, saveDrones, deleteDrones, sleep, droneScan }
+const parseXml = (drones) => {
+  const parsedData = JSON.parse(convert.xml2json(drones.data, { compact: true, spaces: 2 }))
+  const filteredDrones = parsedData.report.capture.drone.filter((x) => filterPosition(x))
+  const deviceInfo = parsedData.report.deviceInformation
+  return [filteredDrones, deviceInfo]
+}
+
+module.exports = {
+  filterPosition,
+  saveDevice,
+  saveDrones,
+  deleteDrones,
+  sleep,
+  droneScan,
+  parseXml,
+  calculateDistance,
+}
