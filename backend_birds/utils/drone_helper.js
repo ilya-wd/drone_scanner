@@ -5,7 +5,6 @@ const { prismaUpsert } = require('./prismaUpsert')
 
 const filterPosition = (drone, insideNDZ) => {
   const distance = calculateDistance(drone)
-  console.log(insideNDZ ? distance < 100000 : distance > 100000, distance)
   return insideNDZ ? distance < 100000 : distance > 100000
 }
 
@@ -15,34 +14,42 @@ const calculateDistance = (drone) => {
   return distance
 }
 
-const saveDrones = async (drones, violated) => {
-  for await (const drone of drones) {
-    let pilot = undefined
-    if (violated) {
-      try {
-        pilot = await axios.get(
-          `https://assignments.reaktor.com/birdnest/pilots/${drone.serialNumber._text}`
-        )
-      } catch (e) {
-        console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
-        console.error(e)
-        console.warn('PILOT ERROR PILOT ERROR PILOT ERROR PILOT ERROR')
-      }
-    }
+const fetchPilot = async (serialNumber) => {
+  let pilot = undefined
+  try {
+    pilot = await axios.get(`https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`)
+  } catch (e) {
+    console.error(e)
+  }
+  return pilot
+}
 
+const saveDrones = async (drones, violated) => {
+  for (const drone of drones) {
+    const foundDrone = await prisma.drone.findUnique({
+      where: {
+        serialNumber: drone.serialNumber._text,
+      },
+    })
+
+    // if pilot(drone.serialNumber) found
+    const pilot = await fetchPilot(drone.serialNumber._text)
+
+    const distance = calculateDistance(drone)
+    let closestDist = distance
+
+    if (foundDrone && closestDist > foundDrone.closestDistance) {
+      closestDist = foundDrone.closestDistance
+    }
     try {
-      // prismaUpsert(drone, pilot)
       await prisma.drone.upsert({
         where: {
           serialNumber: drone.serialNumber._text,
         },
         update: {
           lastSavedAt: new Date(),
-          currentDistance: calculateDistance(drone),
-          closestDistance:
-            calculateDistance(drone) < drone.closestDistance
-              ? calculateDistance(drone)
-              : drone.closestDistance,
+          currentDistance: distance,
+          closestDistance: closestDist,
         },
         create: {
           serialNumber: drone.serialNumber._text,
@@ -54,8 +61,8 @@ const saveDrones = async (drones, violated) => {
           positionY: Number(drone.positionY._text),
           positionX: Number(drone.positionX._text),
           altitude: Number(drone.altitude._text),
-          currentDistance: calculateDistance(drone),
-          closestDistance: calculateDistance(drone),
+          currentDistance: distance,
+          closestDistance: distance,
           pilot: pilot
             ? {
                 create: {
@@ -72,7 +79,6 @@ const saveDrones = async (drones, violated) => {
       })
     } catch (e) {
       console.error(e)
-      console.warn('DRONE SAVING !!!!!!!!!!!!!!!')
     }
   }
 }
@@ -99,7 +105,6 @@ const saveDevice = async (device) => {
     })
   } catch (e) {
     console.error(e)
-    console.warn('DEVICE SAVE !!!!!!!!!!!!!!!!')
   }
 }
 
@@ -129,13 +134,10 @@ const droneScan = () => {
     .then((data) => parseXml(data))
     .then((parsedData) => {
       saveDrones(parsedData[0], true)
-      saveDrones(parsedData[1], false)
       saveDevice(parsedData[2])
     })
     .catch((error) => {
-      console.warn('SCANNING SCANNING SCANNING')
       console.error(error)
-      console.warn('SCANNING SCANNING SCANNING')
       sleep(5)
     })
 }

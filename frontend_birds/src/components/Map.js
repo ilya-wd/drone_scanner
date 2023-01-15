@@ -17,20 +17,20 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     marker: { color: 'green', size: [] },
   }
 
-  const nestArea = {
-    type: 'scatter',
-    mode: 'markers',
-    x: [250],
-    y: [250],
-    marker: { color: 'blue', size: [250] },
-  }
+  // const nestArea = {
+  //   type: 'scatter',
+  //   mode: 'markers',
+  //   x: [250],
+  //   y: [250],
+  //   marker: { color: 'blue', size: [200] },
+  // }
 
   const nest = {
     type: 'scatter',
     mode: 'markers',
     x: [250],
     y: [250],
-    marker: { color: 'white', size: [10] },
+    marker: { color: 'blue', size: [10] },
   }
 
   const furthermostCorner = {
@@ -49,7 +49,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     marker: { color: 'white', size: [0.5] },
   }
 
-  if (perpetrators.length > 0) {
+  if (perpetrators) {
     perpetrators.map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
       const yCoord = Math.round(drone.positionY / 1000)
@@ -59,7 +59,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     })
   }
 
-  if (nonPerpetrators.length > 0) {
+  if (nonPerpetrators) {
     nonPerpetrators.map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
       const yCoord = Math.round(drone.positionY / 1000)
@@ -70,7 +70,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
   }
 
   const plotData = [
-    nestArea,
+    // nestArea,
     dronesInNDZ,
     dronesOutsideNDZ,
     nest,
@@ -93,6 +93,24 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     },
     paper_bgcolor: 'rgba(0, 0, 0, 0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
+    shapes: [
+      {
+        type: 'circle',
+        xref: 'x',
+        yref: 'y',
+        x0: 150,
+        y0: 150,
+        x1: 350,
+        y1: 350,
+        opacity: 0.2,
+
+        fillcolor: 'orange',
+
+        line: {
+          color: 'orange',
+        },
+      },
+    ],
   }
 
   const plotConfig = {

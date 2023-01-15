@@ -12,8 +12,8 @@ const WelcomeMsg = () => {
       </p>
       <p style={pStyle}>
         You can find information about the most recent violators in the table below. On the map you
-        can see how close some of them get to Monadikuikka's nest, where nest is a white dot in the
-        center of the blue circle - NDZ.
+        can see how close some of them get to Monadikuikka's nest, where nest is a blue dot in the
+        center of an orange circle - NDZ.
       </p>
       <p style={pStyle}>
         You can take action by contacting pilots and authorities! We made it fairly easy for you -

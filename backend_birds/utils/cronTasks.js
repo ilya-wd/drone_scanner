@@ -9,7 +9,7 @@ const cronDelete = () => {
 }
 
 const cronScan = () => {
-  cron.schedule('*/3 * * * * *', () => {
+  cron.schedule('* * * * * *', () => {
     droneScan()
   })
 }

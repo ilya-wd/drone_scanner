@@ -1,10 +1,10 @@
 const { prisma } = require('../prisma/prismaClient')
 const dronesRouter = require('express').Router()
-const axios = require('axios')
 
 dronesRouter.get('/get_data', async (request, response) => {
   const now = new Date()
   const tenMinutes = 60 * 10 * 1000
+  const uptime = process.uptime()
 
   const device = await prisma.device.findFirst({
     orderBy: { lastSavedAt: 'desc' },
@@ -42,7 +42,8 @@ dronesRouter.get('/get_data', async (request, response) => {
     ...drone,
     pilot: pilots.find((p) => p.droneId === drone.id),
   }))
-  response.json([filteredMatchedDrones, nonPerpetrators, [device]])
+
+  response.json([filteredMatchedDrones, nonPerpetrators, [device], uptime])
 })
 
 module.exports = dronesRouter

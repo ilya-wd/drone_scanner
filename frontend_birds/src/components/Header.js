@@ -1,23 +1,25 @@
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Container } from 'react-bootstrap'
 
-const Header = ({ perpetrators, nonPerpetrators, dev }) => {
+const Header = ({ perpetrators, nonPerpetrators, dev, uptime }) => {
   const device = dev[0]
-  const totalDrones = perpetrators.length + nonPerpetrators.length
-  const totalPerpetrators = perpetrators.length
+  // const totalDrones = perpetrators.length + nonPerpetrators.length
+  const totalDrones = 'NOPE'
+  // const totalPerpetrators = perpetrators.length
+  const servUptime = (uptime / 60).toFixed(2)
 
   return (
-    <Navbar>
-      <div key="deficeInfo">
-        <span>Device: {device.deviceId}</span>
-        <span>Uptime: {device.uptimeSeconds / 60} min.</span>
-        <span>Listen range: {Math.floor(device.listenRange / 1000)} m.</span>
-      </div>
-      <div key="droneInfo">
+    <Navbar bg="light" expand="lg">
+      <Container key="deficeInfo">
+        <span> Device: {device.deviceId} </span>
+        <span> Uptime: {Math.floor(device.uptimeSeconds / 60)} min. </span>
+        <span> Listen range: {device.listenRange / 1000} m. </span>
+      </Container>
+      <Container key="droneInfo">
         <span>{totalDrones} spotted in NDZ in the past 10 minutes</span>
-      </div>
-      <div key="serverInfo">
-        <span></span>
-      </div>
+      </Container>
+      <Container key="serverInfo">
+        <span> Server uptime: {servUptime} </span>
+      </Container>
     </Navbar>
   )
 }

@@ -5,6 +5,7 @@ import WelcomeMsg from './components/WelcomeMsg'
 import Header from './components/Header'
 
 import useSWR from 'swr'
+import { useState } from 'react'
 
 function App() {
   const timeNow = new Date()
@@ -13,7 +14,7 @@ function App() {
     refreshInterval: 1000,
   })
 
-  let unidentifiedPerpetrators, perpetrators, badDrones, nonPerpetrators, device
+  let unidentifiedPerpetrators, perpetrators, badDrones, nonPerpetrators, device, uptime
 
   if (error) return <h1>failed to load</h1>
   if (!data) {
@@ -22,6 +23,7 @@ function App() {
     badDrones = data[0]
     nonPerpetrators = data[1]
     device = data[2]
+    uptime = data[3]
     perpetrators = badDrones.filter((p) => p.pilot !== undefined)
     unidentifiedPerpetrators = badDrones.filter((p) => p.pilot === undefined)
   }
@@ -29,9 +31,9 @@ function App() {
   return (
     <div className="App">
       <div>
-        <Header perpetrators={perpetrators} nonPerpetrators={nonPerpetrators} dev={device} />
+        <Header perpetrators={perpetrators} dev={device} uptime={uptime} />
         <WelcomeMsg />
-        <Map perpetrators={perpetrators} nonPerpetrators={nonPerpetrators} />
+        <Map perpetrators={perpetrators} />
         <InfoTable
           knownDrones={perpetrators}
           unknownDrones={unidentifiedPerpetrators}
