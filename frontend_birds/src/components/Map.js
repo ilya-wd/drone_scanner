@@ -17,14 +17,6 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     marker: { color: 'green', size: [] },
   }
 
-  // const nestArea = {
-  //   type: 'scatter',
-  //   mode: 'markers',
-  //   x: [250],
-  //   y: [250],
-  //   marker: { color: 'blue', size: [200] },
-  // }
-
   const nest = {
     type: 'scatter',
     mode: 'markers',
@@ -69,14 +61,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     })
   }
 
-  const plotData = [
-    // nestArea,
-    dronesInNDZ,
-    dronesOutsideNDZ,
-    nest,
-    furthermostCorner,
-    coordinatesOrigin,
-  ]
+  const plotData = [dronesInNDZ, dronesOutsideNDZ, nest, furthermostCorner, coordinatesOrigin]
 
   const plotLayout = {
     showlegend: false,

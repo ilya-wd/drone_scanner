@@ -1,10 +1,8 @@
 import { Navbar, Container } from 'react-bootstrap'
 
-const Header = ({ perpetrators, nonPerpetrators, dev, uptime }) => {
+const Header = ({ perpetrators, dev, uptime }) => {
   const device = dev[0]
-  // const totalDrones = perpetrators.length + nonPerpetrators.length
-  const totalDrones = 'NOPE'
-  // const totalPerpetrators = perpetrators.length
+  const totalDrones = perpetrators.length
   const servUptime = (uptime / 60).toFixed(2)
 
   return (
@@ -15,7 +13,7 @@ const Header = ({ perpetrators, nonPerpetrators, dev, uptime }) => {
         <span> Listen range: {device.listenRange / 1000} m. </span>
       </Container>
       <Container key="droneInfo">
-        <span>{totalDrones} spotted in NDZ in the past 10 minutes</span>
+        <span>{totalDrones} drones spotted in NDZ in the past 10 minutes</span>
       </Container>
       <Container key="serverInfo">
         <span> Server uptime: {servUptime} </span>

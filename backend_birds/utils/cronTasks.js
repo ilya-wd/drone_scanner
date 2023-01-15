@@ -1,5 +1,6 @@
 const cron = require('node-cron')
-const { deleteDrones, droneScan } = require('./drone_helper')
+const { droneScan } = require('./drone_helper')
+const { deleteDrones } = require('./dbQueries')
 
 // Cleaning the database each day at 01:00
 const cronDelete = () => {

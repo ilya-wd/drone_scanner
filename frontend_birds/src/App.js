@@ -14,16 +14,15 @@ function App() {
     refreshInterval: 1000,
   })
 
-  let unidentifiedPerpetrators, perpetrators, badDrones, nonPerpetrators, device, uptime
+  let unidentifiedPerpetrators, perpetrators, badDrones, device, uptime
 
   if (error) return <h1>failed to load</h1>
   if (!data) {
     return <h1>loading...</h1>
   } else {
     badDrones = data[0]
-    nonPerpetrators = data[1]
-    device = data[2]
-    uptime = data[3]
+    device = data[1]
+    uptime = data[2]
     perpetrators = badDrones.filter((p) => p.pilot !== undefined)
     unidentifiedPerpetrators = badDrones.filter((p) => p.pilot === undefined)
   }
