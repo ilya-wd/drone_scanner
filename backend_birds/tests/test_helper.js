@@ -1,5 +1,4 @@
-const initialDronesXML = {
-  data: `<?xml version="1.0" encoding="UTF-8"?>
+const initialDronesXML = `<?xml version="1.0" encoding="UTF-8"?>
 <report>
   <deviceInformation deviceId="GUARDB1RD">
     <listenRange>500000</listenRange>
@@ -93,7 +92,6 @@ const initialDronesXML = {
     <altitude>4426.964644784682</altitude>
   </drone>
   </capture>
-</report>%`,
-}
+</report>%`
 
 module.exports = { initialDronesXML }
