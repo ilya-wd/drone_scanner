@@ -9,8 +9,8 @@ const WelcomeMsg = () => {
     <div class="welcome column">
       <h1>Welcome, friends of Monadikuikka!</h1>
       <p style={pStyle}>
-        On this website you can see the most recent information about drone pilots who violate an
-        NDZ around Monadikuikka nesting area.
+        On this website you can see the most recent information about drone pilots who violate a 100
+        meter radius No Drone Zone (NDZ) around Monadikuikka nesting area at a local lake.
       </p>
       <p style={pStyle}>
         You can find information about the most recent violators in the table below. On the map you

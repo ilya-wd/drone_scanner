@@ -21,8 +21,9 @@ const Header = ({ perpetrators, dev, uptime }) => {
 
   const navbarStyle = {
     width: '100%',
-    background: '#d3d8f7',
-    fontSize: 22,
+    // background: '#d3d8f7',
+    // background: '#f4f5fc',
+    fontSize: 20,
     justifyContent: 'space-around',
     display: 'flex',
   }
@@ -36,12 +37,9 @@ const Header = ({ perpetrators, dev, uptime }) => {
   return (
     <Navbar expand="lg" class="navbar" style={navbarStyle}>
       <Container key="deficeInfo" class={navbarStyle}>
-        <span style={cont}>Scanner name: {device.deviceId} </span>
-        <span style={cont}> | </span>
-        <span style={cont}>Scanner uptime: {deviceUptime} </span>
-        <span style={cont}> | </span>
-        <span style={cont}>{totalDrones} drones spotted in NDZ in the past 10 minutes </span>
-        <span style={cont}> | </span>
+        <span style={cont}>Scanner name: {device.deviceId}</span>
+        <span style={cont}>Scanner uptime: {deviceUptime}</span>
+        <span style={cont}>{totalDrones} drones spotted in NDZ in the past 10 minutes</span>
         <span style={cont}>Server uptime: {serverUptime}</span>
       </Container>
     </Navbar>

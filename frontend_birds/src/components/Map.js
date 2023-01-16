@@ -8,7 +8,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     y: [],
     marker: { color: 'red', size: [] },
     text: [],
-    hovertemplate: '(%{y}, %{x}) <br>' + ' %{text}' + '<extra></extra>',
+    hovertemplate: ' %{text}' + '<extra></extra>',
   }
 
   const nest = {
@@ -17,23 +17,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     x: [250],
     y: [250],
     marker: { color: 'blue', size: [10] },
-    hovertemplate: '(%{y}, %{x}) <br>' + ' The Nest' + '<extra></extra>',
-  }
-
-  const furthermostCorner = {
-    type: 'scatter',
-    mode: 'markers',
-    x: [500],
-    y: [500],
-    marker: { color: 'white', size: [0.5] },
-  }
-
-  const coordinatesOrigin = {
-    type: 'scatter',
-    mode: 'markers',
-    x: [0],
-    y: [0],
-    marker: { color: 'white', size: [0.5] },
+    hovertemplate: ' The Nest' + '<extra></extra>',
   }
 
   if (knownDrones || unknownDrones) {
@@ -43,11 +27,15 @@ const Map = ({ knownDrones, unknownDrones }) => {
       dronesInNDZ.x.push(xCoord)
       dronesInNDZ.y.push(yCoord)
       dronesInNDZ.marker.size.push(10)
-      dronesInNDZ.text.push(`${drone.pilot.firstName} ${drone.pilot.lastName} `)
+      dronesInNDZ.text.push(
+        `${drone.pilot.firstName} ${drone.pilot.lastName} ${Math.round(
+          drone.closestDistance / 1000
+        )}m`
+      )
     })
   }
 
-  const plotData = [dronesInNDZ, nest, furthermostCorner, coordinatesOrigin]
+  const plotData = [dronesInNDZ, nest]
 
   const plotLayout = {
     showlegend: false,
@@ -80,6 +68,12 @@ const Map = ({ knownDrones, unknownDrones }) => {
         },
       },
     ],
+    xaxis: {
+      visible: false,
+    },
+    yaxis: {
+      visible: false,
+    },
   }
 
   const plotConfig = {
