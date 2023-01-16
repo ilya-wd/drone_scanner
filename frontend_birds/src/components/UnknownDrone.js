@@ -9,10 +9,19 @@ const UnknownDrone = ({ drone, time }) => {
   return (
     <tr style={styleUknownDrone}>
       <td colSpan="4">
-        <p>
+        <p data-testid={drone.serialNumber + ' unknown'}>
           Owner of drone {drone.serialNumber} made by {drone.manufacturer} is not found! Please
-          contact us at <a href="monadikuikka@bird.friends">monadikuikka@bird.friends</a> if you
-          have any information about the owner.
+          contact us at
+          <a
+            href={
+              'mailto:monadikuikka@bird.friends&subject=Drone' +
+              drone.serialNumber +
+              'identified &body=I know who is the owner of a drone'
+            }
+          >
+            monadikuikka@bird.friends
+          </a>
+          if you have any information about the owner.
         </p>
       </td>
       <td>
