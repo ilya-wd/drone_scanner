@@ -36,7 +36,7 @@ const saveDrone = async (drone, pilot, distance, closestDist) => {
         : undefined,
     },
   })
-  created
+  return created
 }
 
 const saveDevice = async (device) => {
@@ -123,6 +123,11 @@ const findDevice = async () => {
   })
 
   return device
+}
+
+const findPilots = async () => {
+  const pilots = await prisma.pilot.findMany({})
+  return pilots
 }
 
 module.exports = {

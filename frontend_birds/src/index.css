@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color:#f0ffff;
+  /* color:#d8bfd8 */
 }
 
 code {
@@ -17,7 +18,7 @@ code {
   /* flex-direction: row */
   display:inline;
   flex-wrap: wrap;
-  align-items: baseline
+  align-items: center;
 }
 
 .welcome {

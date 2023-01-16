@@ -3,20 +3,46 @@ import { Navbar, Container } from 'react-bootstrap'
 const Header = ({ perpetrators, dev, uptime }) => {
   const device = dev[0]
   const totalDrones = perpetrators.length
-  const servUptime = (uptime / 60).toFixed(2)
+  const uptimeFromSeconds = (seconds) => {
+    const uptimeHours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, '0')
+    const uptimeMinutes = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, '0')
+    const uptimeSeconds = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, '0')
+
+    return `${uptimeHours}:${uptimeMinutes}:${uptimeSeconds}`
+  }
+  const serverUptime = uptimeFromSeconds(uptime)
+  const deviceUptime = uptimeFromSeconds(device.uptimeSeconds)
+
+  const navbarStyle = {
+    width: '100%',
+    background: '#d3d8f7',
+    fontSize: 22,
+    justifyContent: 'space-around',
+    display: 'flex',
+  }
+
+  const cont = {
+    justifyContent: 'space-evenly',
+    margin: 30,
+    flex: 1,
+  }
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Container key="deficeInfo">
-        <span> Device: {device.deviceId} </span>
-        <span> Uptime: {Math.floor(device.uptimeSeconds / 60)} min. </span>
-        <span> Listen range: {device.listenRange / 1000} m. </span>
-      </Container>
-      <Container key="droneInfo">
-        <span>{totalDrones} drones spotted in NDZ in the past 10 minutes</span>
-      </Container>
-      <Container key="serverInfo">
-        <span> Server uptime: {servUptime} </span>
+    <Navbar expand="lg" class="navbar" style={navbarStyle}>
+      <Container key="deficeInfo" class={navbarStyle}>
+        <span style={cont}>Scanner name: {device.deviceId} </span>
+        <span style={cont}> | </span>
+        <span style={cont}>Scanner uptime: {deviceUptime} </span>
+        <span style={cont}> | </span>
+        <span style={cont}>{totalDrones} drones spotted in NDZ in the past 10 minutes </span>
+        <span style={cont}> | </span>
+        <span style={cont}>Server uptime: {serverUptime}</span>
       </Container>
     </Navbar>
   )

@@ -28,26 +28,38 @@ const saveDrones = async (drones) => {
       closestDist = foundDrone.closestDistance
     }
 
-    try {
-      await saveDrone(drone, pilot, distance, closestDist)
-    } catch (e) {
-      console.error(e)
-    }
+    saveDrone(drone, pilot, distance, closestDist).catch((error) => console.error(error))
+
+    // try {
+    //   await saveDrone(drone, pilot, distance, closestDist)
+    // } catch (e) {
+    //   console.error(e)
+    // }
   }
 }
 
 const sleep = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds * 1000))
 
 const droneScan = async () => {
-  try {
-    const data = await fetchDrones()
-    const parsedData = parseXml(data)
-    saveDrones(parsedData[0])
-    saveDevice(parsedData[1])
-  } catch (e) {
-    console.error(e)
-    sleep(5)
-  }
+  fetchDrones()
+    .then((data) => parseXml(data))
+    .then((parsedData) => {
+      saveDrones(parsedData[0])
+      saveDevice(parsedData[1])
+    })
+    .catch((error) => {
+      console.error(error)
+      sleep(5)
+    })
+  // try {
+  //   const data = await fetchDrones()
+  //   const parsedData = parseXml(data)
+  //   saveDrones(parsedData[0])
+  //   saveDevice(parsedData[1])
+  // } catch (e) {
+  //   console.error(e)
+  //   sleep(5)
+  // }
 }
 
 const parseXml = (drones) => {

@@ -1,20 +1,14 @@
 import Plot from 'react-plotly.js'
 
-const Map = ({ perpetrators, nonPerpetrators }) => {
+const Map = ({ knownDrones, unknownDrones }) => {
   const dronesInNDZ = {
     type: 'scatter',
     mode: 'markers',
     x: [],
     y: [],
     marker: { color: 'red', size: [] },
-  }
-
-  const dronesOutsideNDZ = {
-    type: 'scatter',
-    mode: 'markers',
-    x: [],
-    y: [],
-    marker: { color: 'green', size: [] },
+    text: [],
+    hovertemplate: '(%{y}, %{x}) <br>' + ' %{text}' + '<extra></extra>',
   }
 
   const nest = {
@@ -23,6 +17,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     x: [250],
     y: [250],
     marker: { color: 'blue', size: [10] },
+    hovertemplate: '(%{y}, %{x}) <br>' + ' The Nest' + '<extra></extra>',
   }
 
   const furthermostCorner = {
@@ -41,27 +36,18 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
     marker: { color: 'white', size: [0.5] },
   }
 
-  if (perpetrators) {
-    perpetrators.map((drone) => {
+  if (knownDrones || unknownDrones) {
+    knownDrones.concat(unknownDrones).map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
       const yCoord = Math.round(drone.positionY / 1000)
       dronesInNDZ.x.push(xCoord)
       dronesInNDZ.y.push(yCoord)
       dronesInNDZ.marker.size.push(10)
+      dronesInNDZ.text.push(`${drone.pilot.firstName} ${drone.pilot.lastName} `)
     })
   }
 
-  if (nonPerpetrators) {
-    nonPerpetrators.map((drone) => {
-      const xCoord = Math.round(drone.positionX / 1000)
-      const yCoord = Math.round(drone.positionY / 1000)
-      dronesOutsideNDZ.x.push(xCoord)
-      dronesOutsideNDZ.y.push(yCoord)
-      dronesOutsideNDZ.marker.size.push(10)
-    })
-  }
-
-  const plotData = [dronesInNDZ, dronesOutsideNDZ, nest, furthermostCorner, coordinatesOrigin]
+  const plotData = [dronesInNDZ, nest, furthermostCorner, coordinatesOrigin]
 
   const plotLayout = {
     showlegend: false,
@@ -88,9 +74,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
         x1: 350,
         y1: 350,
         opacity: 0.2,
-
         fillcolor: 'orange',
-
         line: {
           color: 'orange',
         },
@@ -100,7 +84,7 @@ const Map = ({ perpetrators, nonPerpetrators }) => {
 
   const plotConfig = {
     displayModeBar: false,
-    staticPlot: true,
+    staticPlot: false,
   }
 
   return <Plot class="map column" data={plotData} layout={plotLayout} config={plotConfig} />

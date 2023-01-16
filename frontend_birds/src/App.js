@@ -5,7 +5,7 @@ import WelcomeMsg from './components/WelcomeMsg'
 import Header from './components/Header'
 
 import useSWR from 'swr'
-import { useState } from 'react'
+import { Container } from 'react-bootstrap'
 
 function App() {
   const timeNow = new Date()
@@ -29,16 +29,14 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        <Header perpetrators={perpetrators} dev={device} uptime={uptime} />
-        <WelcomeMsg />
-        <Map perpetrators={perpetrators} />
-        <InfoTable
-          knownDrones={perpetrators}
-          unknownDrones={unidentifiedPerpetrators}
-          time={timeNow}
-        />
-      </div>
+      <Header perpetrators={perpetrators} dev={device} uptime={uptime} />
+      <WelcomeMsg />
+      <Map knownDrones={perpetrators} unknownDrones={unidentifiedPerpetrators} />
+      <InfoTable
+        knownDrones={perpetrators}
+        unknownDrones={unidentifiedPerpetrators}
+        time={timeNow}
+      />
     </div>
   )
 }
