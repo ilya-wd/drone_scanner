@@ -7,7 +7,7 @@ const UnknownDrone = ({ drone, time }) => {
   }
 
   return (
-    <tr style={styleUknownDrone} key={drone.id}>
+    <tr style={styleUknownDrone}>
       <td colspan="4">
         <p>
           Owner of drone {drone.serialNumber} made by {drone.manufacturer} is not found! Please

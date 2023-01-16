@@ -6,7 +6,7 @@ const WelcomeMsg = () => {
   }
 
   return (
-    <div class="welcome column">
+    <div className="welcome column">
       <h1>Welcome, friends of Monadikuikka!</h1>
       <p style={pStyle}>
         On this website you can see the most recent information about drone pilots who violate a 100

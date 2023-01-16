@@ -49,12 +49,16 @@ const InfoTable = ({ knownDrones, unknownDrones, time }) => {
         </thead>
         <tbody>
           {knownDrones ? (
-            knownDrones.map((drone) => <KnownDrone drone={drone} time={time} />)
+            knownDrones.map((drone) => (
+              <KnownDrone drone={drone} time={time} key={drone.serialNumber} />
+            ))
           ) : (
             <NoPilotKnown />
           )}
           {unknownDrones ? (
-            unknownDrones.map((drone) => <UnknownDrone drone={drone} time={time} />)
+            unknownDrones.map((drone) => (
+              <UnknownDrone drone={drone} time={time} key={drone.serialNumber} />
+            ))
           ) : (
             <NoPilotUnknown />
           )}

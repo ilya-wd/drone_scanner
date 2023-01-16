@@ -3,7 +3,7 @@ const KnownDrone = ({ drone, time }) => {
   const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
   return (
-    <tr key={drone.id}>
+    <tr>
       <td>
         {drone.pilot.firstName} {drone.pilot.lastName}
       </td>

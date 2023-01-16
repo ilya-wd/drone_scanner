@@ -27,14 +27,7 @@ const saveDrones = async (drones) => {
     if (foundDrone && closestDist > foundDrone.closestDistance) {
       closestDist = foundDrone.closestDistance
     }
-
     saveDrone(drone, pilot, distance, closestDist).catch((error) => console.error(error))
-
-    // try {
-    //   await saveDrone(drone, pilot, distance, closestDist)
-    // } catch (e) {
-    //   console.error(e)
-    // }
   }
 }
 
@@ -51,15 +44,6 @@ const droneScan = async () => {
       console.error(error)
       sleep(5)
     })
-  // try {
-  //   const data = await fetchDrones()
-  //   const parsedData = parseXml(data)
-  //   saveDrones(parsedData[0])
-  //   saveDevice(parsedData[1])
-  // } catch (e) {
-  //   console.error(e)
-  //   sleep(5)
-  // }
 }
 
 const parseXml = (drones) => {

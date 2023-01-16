@@ -8,7 +8,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     y: [],
     marker: { color: 'red', size: [] },
     text: [],
-    hovertemplate: ' %{text}' + '<extra></extra>',
+    hovertemplate: '%{text}' + '<extra></extra>',
   }
 
   const nest = {
@@ -17,7 +17,12 @@ const Map = ({ knownDrones, unknownDrones }) => {
     x: [250],
     y: [250],
     marker: { color: 'blue', size: [10] },
-    hovertemplate: ' The Nest' + '<extra></extra>',
+    hovertemplate: ' The Nest [0, 0]' + '<extra></extra>',
+  }
+
+  const calculateDistanceOnMap = (droneY, droneX) => {
+    const distance = Math.sqrt(Math.pow(droneY - 250, 2) + Math.pow(droneX - 250, 2))
+    return Math.round(distance)
   }
 
   if (knownDrones || unknownDrones) {
@@ -27,11 +32,10 @@ const Map = ({ knownDrones, unknownDrones }) => {
       dronesInNDZ.x.push(xCoord)
       dronesInNDZ.y.push(yCoord)
       dronesInNDZ.marker.size.push(10)
-      dronesInNDZ.text.push(
-        `${drone.pilot.firstName} ${drone.pilot.lastName} ${Math.round(
-          drone.closestDistance / 1000
-        )}m`
-      )
+      const pilotName = drone.pilot
+        ? `${drone.pilot.firstName} ${drone.pilot.lastName}`
+        : 'Unknown pilot'
+      dronesInNDZ.text.push(`${pilotName} ${calculateDistanceOnMap(xCoord, yCoord)}m`)
     })
   }
 
@@ -81,7 +85,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     staticPlot: false,
   }
 
-  return <Plot class="map column" data={plotData} layout={plotLayout} config={plotConfig} />
+  return <Plot className="map column" data={plotData} layout={plotLayout} config={plotConfig} />
 }
 
 export default Map
