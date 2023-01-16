@@ -1,5 +1,4 @@
 const dronesRouter = require('./controllers/droneController')
-const pilotsRouter = require('./controllers/pilotController')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const { cronScan, cronDelete } = require('./utils/cronTasks')
@@ -14,7 +13,6 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 app.use('/api/drones', dronesRouter)
-app.use('/api/pilots', pilotsRouter)
 
 cronDelete()
 cronScan()

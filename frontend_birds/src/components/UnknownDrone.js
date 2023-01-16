@@ -8,7 +8,7 @@ const UnknownDrone = ({ drone, time }) => {
 
   return (
     <tr style={styleUknownDrone}>
-      <td colspan="4">
+      <td colSpan="4">
         <p>
           Owner of drone {drone.serialNumber} made by {drone.manufacturer} is not found! Please
           contact us at <a href="monadikuikka@bird.friends">monadikuikka@bird.friends</a> if you

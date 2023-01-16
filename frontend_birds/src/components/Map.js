@@ -17,7 +17,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     x: [250],
     y: [250],
     marker: { color: 'blue', size: [10] },
-    hovertemplate: ' The Nest [0, 0]' + '<extra></extra>',
+    hovertemplate: ' The Nest' + '<extra></extra>',
   }
 
   if (knownDrones || unknownDrones) {
