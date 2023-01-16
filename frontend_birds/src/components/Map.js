@@ -20,11 +20,6 @@ const Map = ({ knownDrones, unknownDrones }) => {
     hovertemplate: ' The Nest [0, 0]' + '<extra></extra>',
   }
 
-  const calculateDistanceOnMap = (droneY, droneX) => {
-    const distance = Math.sqrt(Math.pow(droneY - 250, 2) + Math.pow(droneX - 250, 2))
-    return Math.round(distance)
-  }
-
   if (knownDrones || unknownDrones) {
     knownDrones.concat(unknownDrones).map((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
@@ -35,7 +30,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
       const pilotName = drone.pilot
         ? `${drone.pilot.firstName} ${drone.pilot.lastName}`
         : 'Unknown pilot'
-      dronesInNDZ.text.push(`${pilotName} ${calculateDistanceOnMap(xCoord, yCoord)}m`)
+      dronesInNDZ.text.push(`${pilotName} ${Math.round(drone.currentDistance / 1000)}m`)
     })
   }
 

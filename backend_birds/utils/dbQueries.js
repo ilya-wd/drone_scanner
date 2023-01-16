@@ -9,6 +9,8 @@ const saveDrone = async (drone, pilot, distance, closestDist) => {
       lastSavedAt: new Date(),
       currentDistance: distance,
       closestDistance: closestDist,
+      positionY: Number(drone.positionY._text),
+      positionX: Number(drone.positionX._text),
     },
     create: {
       serialNumber: drone.serialNumber._text,
