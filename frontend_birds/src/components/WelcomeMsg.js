@@ -15,7 +15,9 @@ const WelcomeMsg = () => {
       <p style={pStyle}>
         You can find information about the most recent violators in the table below. On the map you
         can see how close some of them get to Monadikuikka's nest, where nest is a purplish dot in
-        the center of an orange circle - NDZ.
+        the center of an orange circle - NDZ. Please not that drones' movements are unpredictable
+        and extremely fast. One can be in the center of NDZ and then leave it immediately. In that
+        case, the map displays its last known location.
       </p>
       <p style={pStyle}>
         You can take action by contacting pilots and authorities! We made it fairly easy for you -
