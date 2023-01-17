@@ -1,6 +1,6 @@
 import { Table } from 'react-bootstrap'
-import UnknownDrone from './presentationals/UnknownDrone'
-import KnownDrone from './presentationals/KnownDrone'
+import UnknownDrone from './UnknownDrone'
+import KnownDrone from './KnownDrone'
 import PropTypes from 'prop-types'
 
 const NoPilotKnown = () => {
@@ -19,7 +19,7 @@ const NoPilotKnown = () => {
 
 const NoPilotUnknown = () => {
   return (
-    <tr key="noPilotsUknown">
+    <tr key="noPilotsUnknown">
       <h3>
         No drones with
         <p>
@@ -36,17 +36,22 @@ const InfoTable = ({ knownDrones, unknownDrones, time }) => {
     marginTop: 10,
   }
 
+  const styleRow = {
+    textAlign: 'center',
+    justifyContent: 'center',
+  }
+
   return (
     <div>
       <Table style={styleTable} striped bordered hover>
         <thead>
-          <tr>
+          <tr class="text-center">
             <th>Pilot's name</th>
             <th>Pilot's email</th>
             <th>Pilot's phone number</th>
-            <th>Closest confirmed distance to the nest</th>
+            <th style={styleRow}>Closest confirmed distance to the nest</th>
             <th>Current distance to the nest</th>
-            <th>Last saved</th>
+            <th>Last seen</th>
           </tr>
         </thead>
         <tbody>

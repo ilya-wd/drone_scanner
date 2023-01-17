@@ -6,3 +6,4 @@ package-lock.json
 /backend_birds/.env
 /backend_birds/prisma/dev.db
 /backend_birds/prisma/test.db
+/misc

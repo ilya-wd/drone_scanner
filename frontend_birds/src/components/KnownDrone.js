@@ -5,7 +5,7 @@ const KnownDrone = ({ drone, time }) => {
   const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
 
   return (
-    <tr>
+    <tr class="text-center">
       <td>
         {drone.pilot.firstName} {drone.pilot.lastName}
       </td>
@@ -23,10 +23,10 @@ const KnownDrone = ({ drone, time }) => {
       <td>
         <a href={'tel:' + drone.pilot.phoneNumber}>{drone.pilot.phoneNumber} </a>
       </td>
-      <td>{drone.closestDistance + 'm'}</td>
-      <td>{drone.currentDistance + 'm'}</td>
+      <td>{drone.closestDistance.toFixed(2) + 'm'}</td>
+      <td>{drone.currentDistance.toFixed(2) + 'm'}</td>
       <td>
-        {lastSavedMinutes} minutes {lastSavedSec} seconds ago
+        {lastSavedMinutes} min. {lastSavedSec} sec. ago
       </td>
     </tr>
   )

@@ -9,8 +9,8 @@ const filterPosition = (drone, insideNDZ) => {
 
 const calculateDistance = (drone) => {
   const [droneY, droneX] = [
-    (Number(drone.positionY._text) / 1000).toFixed(2),
-    (Number(drone.positionX._text) / 1000).toFixed(2),
+    Number(drone.positionY._text) / 1000,
+    Number(drone.positionX._text) / 1000,
   ]
   const distance = Math.sqrt(Math.pow(droneY - 250, 2) + Math.pow(droneX - 250, 2))
   return distance
