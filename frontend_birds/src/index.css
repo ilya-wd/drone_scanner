@@ -13,6 +13,39 @@ code {
     monospace;
 }
 
+.welcome, .map { 
+  flex-direction: row;
+  display:grid;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* .testcont {
+  display: grid;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+} */
+
+/* .welcome {
+  /* width: 20%;
+  margin: 50px; */
+  /*
+  width: 30%;
+  float: left
+}
+
+.map {
+  width: 60%;
+  height: 60%;
+  float: right
+}
+
+.column {
+  width: 100%;
+  float: left;
+  margin: 50px;
+} */
 .welcome, .map {
   /* flex-direction: row */
   display:inline;
@@ -21,12 +54,16 @@ code {
 }
 
 .welcome {
-  width: 20%;
-  margin: 50px;
+  margin: 10px;
+  float: left
+}
+
+.map {
+  float: right;
 }
 
 .column {
   width: 45%;
-  float: left;
-  margin: 50px;
+  /* float: left; */
+  margin: 10px;
 }

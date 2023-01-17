@@ -10,7 +10,7 @@ import { Container } from 'react-bootstrap'
 function App() {
   const timeNow = new Date()
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
-  const { data, error, isLoading } = useSWR('/api/drones/get_data', fetcher, {
+  const { data, error } = useSWR('/api/drones/get_data', fetcher, {
     refreshInterval: 1000,
   })
 
@@ -30,8 +30,10 @@ function App() {
   return (
     <div className="App">
       <Header perpetrators={perpetrators} dev={device} uptime={uptime} />
+
       <WelcomeMsg />
       <Map knownDrones={perpetrators} unknownDrones={unidentifiedPerpetrators} />
+
       <InfoTable
         knownDrones={perpetrators}
         unknownDrones={unidentifiedPerpetrators}

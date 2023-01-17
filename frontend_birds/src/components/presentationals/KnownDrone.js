@@ -22,6 +22,7 @@ const KnownDrone = ({ drone, time }) => {
         <a href={'tel:' + drone.pilot.phoneNumber}>{drone.pilot.phoneNumber} </a>
       </td>
       <td>{(drone.closestDistance / 1000).toFixed(2) + 'm'}</td>
+      <td>{(drone.currentDistance / 1000).toFixed(2) + 'm'}</td>
       <td>
         {lastSavedMinutes} minutes {lastSavedSec} seconds ago
       </td>

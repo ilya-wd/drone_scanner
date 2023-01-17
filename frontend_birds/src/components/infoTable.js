@@ -1,6 +1,6 @@
 import { Table } from 'react-bootstrap'
-import UnknownDrone from './UnknownDrone'
-import KnownDrone from './KnownDrone'
+import UnknownDrone from './presentationals/UnknownDrone'
+import KnownDrone from './presentationals/KnownDrone'
 
 const NoPilotKnown = ({}) => {
   return (
@@ -44,6 +44,7 @@ const InfoTable = ({ knownDrones, unknownDrones, time }) => {
             <th>Pilot's email</th>
             <th>Pilot's phone number</th>
             <th>Closest confirmed distance to the nest</th>
+            <th>Current distance to the nest</th>
             <th>Last saved</th>
           </tr>
         </thead>

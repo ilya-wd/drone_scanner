@@ -1,13 +1,18 @@
 const WelcomeMsg = () => {
   const pStyle = {
-    fontSize: 24,
-    padding: 12,
+    fontSize: 22,
+    padding: 10,
+    textAlign: 'center',
+  }
+
+  const h1Style = {
     textAlign: 'center',
   }
 
   return (
+    // <div style={h1Style} className="welcome column">
     <div className="welcome column">
-      <h1>Welcome, friends of Monadikuikka!</h1>
+      <h1 style={h1Style}>Welcome, friends of Monadikuikka!</h1>
       <p style={pStyle}>
         On this website you can see the most recent information about drone pilots who violate a 100
         meter radius No Drone Zone (NDZ) around Monadikuikka nesting area at a local lake.

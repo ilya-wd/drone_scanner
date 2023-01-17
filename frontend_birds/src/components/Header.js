@@ -1,6 +1,8 @@
 import { Navbar, Container } from 'react-bootstrap'
 
 const Header = ({ perpetrators, dev, uptime }) => {
+  const width = window.innerWidth
+
   const device = dev[0]
   const totalDrones = perpetrators.length
   const uptimeFromSeconds = (seconds) => {
@@ -26,19 +28,25 @@ const Header = ({ perpetrators, dev, uptime }) => {
     display: 'flex',
   }
 
-  const cont = {
+  const content = {
     justifyContent: 'space-evenly',
-    margin: 30,
+    margin: 20,
     flex: 1,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    padding: 20,
   }
 
   return (
     <Navbar expand="lg" className="navbar" style={navbarStyle}>
       <Container key="deficeInfo" style={navbarStyle}>
-        <span style={cont}>Scanner name: {device.deviceId}</span>
-        <span style={cont}>Scanner uptime: {deviceUptime}</span>
-        <span style={cont}>{totalDrones} drones spotted in NDZ in the past 10 minutes</span>
-        <span style={cont}>Server uptime: {serverUptime}</span>
+        <span style={content}>Scanner name: {device.deviceId}</span>
+        <span style={content}>Scanner uptime: {deviceUptime}</span>
+        <span style={content}>
+          {totalDrones} drones spotted in NDZ in the past 10 minutes {width}
+        </span>
+        <span style={content}>Server uptime: {serverUptime}</span>
       </Container>
     </Navbar>
   )

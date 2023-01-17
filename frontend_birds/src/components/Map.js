@@ -11,6 +11,13 @@ const Map = ({ knownDrones, unknownDrones }) => {
     hovertemplate: '%{text}' + '<extra></extra>',
   }
 
+  const windowWidth = window.innerWidth
+
+  const widthText =
+    windowWidth < 1150 ? '[please increase your screen width]' : 'Map of drones in NDZ'
+
+  const titleSize = windowWidth < 1140 ? 20 : 28
+
   const nest = {
     type: 'scatter',
     mode: 'markers',
@@ -38,10 +45,16 @@ const Map = ({ knownDrones, unknownDrones }) => {
 
   const plotLayout = {
     showlegend: false,
-    autosize: false,
-    width: 700,
-    height: 700,
-    title: 'Map of drones in NDZ',
+    autosize: true,
+    width: 600,
+    height: 600,
+    title: {
+      text: widthText,
+      font: {
+        size: titleSize,
+        color: 'black',
+      },
+    },
     margin: {
       l: 50,
       r: 50,
@@ -78,6 +91,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
   const plotConfig = {
     displayModeBar: false,
     staticPlot: false,
+    responsive: true,
   }
 
   return <Plot className="map column" data={plotData} layout={plotLayout} config={plotConfig} />

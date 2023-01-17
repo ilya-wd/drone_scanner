@@ -8,7 +8,7 @@ const UnknownDrone = ({ drone, time }) => {
 
   return (
     <tr style={styleUknownDrone}>
-      <td colSpan="4">
+      <td colSpan="5">
         <p data-testid={drone.serialNumber + ' unknown'}>
           Owner of drone {drone.serialNumber} made by {drone.manufacturer} is not found! Please
           contact us at
