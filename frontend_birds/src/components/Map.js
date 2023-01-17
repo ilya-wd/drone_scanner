@@ -30,18 +30,15 @@ const Map = ({ knownDrones, unknownDrones }) => {
 
   if (knownDrones || unknownDrones) {
     knownDrones.concat(unknownDrones).forEach((drone) => {
-      const xCoord = Math.round(drone.positionX / 1000)
-      const yCoord = Math.round(drone.positionY / 1000)
-      dronesInNDZ.x.push(xCoord)
-      dronesInNDZ.y.push(yCoord)
+      dronesInNDZ.x.push(drone.positionX)
+      dronesInNDZ.y.push(drone.positionY)
       dronesInNDZ.marker.size.push(10)
       const pilotName = drone.pilot
         ? `${drone.pilot.firstName} ${drone.pilot.lastName}`
         : 'Unknown pilot'
-      dronesInNDZ.text.push(`${pilotName} ${Math.round(drone.currentDistance / 1000)}m`)
+      dronesInNDZ.text.push(`${pilotName} ${Math.round(drone.currentDistance)}m`)
     })
   }
-
   const plotData = [dronesInNDZ, nest]
 
   const plotLayout = {

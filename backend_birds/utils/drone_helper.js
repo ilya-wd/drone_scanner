@@ -4,12 +4,15 @@ const { fetchPilot, fetchDrones } = require('./apiQueries')
 
 const filterPosition = (drone, insideNDZ) => {
   const distance = calculateDistance(drone)
-  return insideNDZ ? distance < 100000 : distance > 100000
+  return insideNDZ ? distance < 100 : distance > 100
 }
 
 const calculateDistance = (drone) => {
-  const [droneY, droneX] = [Number(drone.positionY._text), Number(drone.positionX._text)]
-  const distance = Math.sqrt(Math.pow(droneY - 250000, 2) + Math.pow(droneX - 250000, 2))
+  const [droneY, droneX] = [
+    (Number(drone.positionY._text) / 1000).toFixed(2),
+    (Number(drone.positionX._text) / 1000).toFixed(2),
+  ]
+  const distance = Math.sqrt(Math.pow(droneY - 250, 2) + Math.pow(droneX - 250, 2))
   return distance
 }
 
@@ -20,6 +23,7 @@ const saveDrones = async (drones) => {
     let closestDist = distance
     let pilot
 
+    // making a call in case data about the pilot has been added tot he server
     if (!foundDrone) {
       pilot = await fetchPilot(drone.serialNumber._text)
     }

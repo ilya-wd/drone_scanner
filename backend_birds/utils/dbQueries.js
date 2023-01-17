@@ -1,6 +1,10 @@
 const { prisma } = require('../prisma/prismaClient')
 
 const saveDrone = async (drone, pilot, distance, closestDist) => {
+  const positionX = Number(drone.positionX._text) / 1000
+  const positionY = Number(drone.positionY._text) / 1000
+  const altitude = Number(drone.altitude._text) / 1000
+
   const created = await prisma.drone.upsert({
     where: {
       serialNumber: drone.serialNumber._text,
@@ -9,8 +13,8 @@ const saveDrone = async (drone, pilot, distance, closestDist) => {
       lastSavedAt: new Date(),
       currentDistance: distance,
       closestDistance: closestDist,
-      positionY: Number(drone.positionY._text),
-      positionX: Number(drone.positionX._text),
+      positionY: positionX,
+      positionX: positionY,
     },
     create: {
       serialNumber: drone.serialNumber._text,
@@ -19,9 +23,9 @@ const saveDrone = async (drone, pilot, distance, closestDist) => {
       ipv4: drone.ipv4._text,
       ipv6: drone.ipv6._text,
       firmware: drone.firmware._text,
-      positionY: Number(drone.positionY._text),
-      positionX: Number(drone.positionX._text),
-      altitude: Number(drone.altitude._text),
+      positionY: positionX,
+      positionX: positionY,
+      altitude: altitude,
       currentDistance: distance,
       closestDistance: distance,
       pilot: pilot
