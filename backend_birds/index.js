@@ -18,7 +18,6 @@ cronDelete()
 cronScan()
 
 app.use(middleware.unknownEndpoint)
-
 app.use(middleware.errorHandler)
 
 const PORT = process.env.PORT || 3003
