@@ -24,16 +24,18 @@ jobs:
 
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.3.0
+         with:
+          envkey_DATABASE_RUL: ${{ secrets.SECRET_KEY }}
 
       - name: create databases for testing
-        run: touch test.db
+        run: 
+          touch test.db
           touch dev.db
 
       - name: Initialize prisma
         run: npx prisma migrate dev && npx prisma generate
         working-directory: backend_birds
-        with:
-          envkey_DATABASE_RUL: ${{ secrets.SECRET_KEY }}
+
 
       # - name: Build the application
       #   run: npm run build:ui
