@@ -1,10 +1,5 @@
 name: Continuous Integration
 
-name: Create .env file
-uses: SpicyPizza/create-envfile@v1.3.0
-
-
-
 on: push
 
 jobs:
@@ -27,9 +22,11 @@ jobs:
         run: npm i
         working-directory: frontend_birds
 
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3.0
+
       - name: create databases for testing
-        run: 
-          touch test.db
+        run: touch test.db
           touch dev.db
 
       - name: Initialize prisma
