@@ -32,7 +32,7 @@ jobs:
           touch dev.db
 
       - name: Initialize prisma
-        run: npx prisma migrate dev && npx prisma generate
+        run: npx prisma migrate dev && npx prisma generate && npm prisma-migrate
         working-directory: backend_birds
 
       # - name: Build the application
