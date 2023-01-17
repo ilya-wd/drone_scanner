@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm i
+      - name: Install dependencies on back end
+        run: cd /backend_birds npm i
+
+     - name: Install dependencies on front end
+        run: cd /backend_birds npm i
 
       - name: Build the application
         run: npm run build:ui
