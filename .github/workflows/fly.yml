@@ -18,7 +18,7 @@ jobs:
         run: cd /backend_birds npm i
 
      - name: Install dependencies on front end
-        run: cd /backend_birds npm i
+        run: cd /frontend_birds npm i
 
       - name: Build the application
         run: npm run build:ui
