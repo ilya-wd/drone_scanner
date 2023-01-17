@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const UnknownDrone = ({ drone, time }) => {
   const lastSavedMinutes = Math.floor((time - new Date(drone.lastSavedAt)) / 1000 / 60)
   const lastSavedSec = Math.floor((time - new Date(drone.lastSavedAt)) / 1000) % 60
@@ -29,6 +31,15 @@ const UnknownDrone = ({ drone, time }) => {
       </td>
     </tr>
   )
+}
+
+UnknownDrone.propTypes = {
+  drone: PropTypes.shape({
+    serialNumber: PropTypes.number.isRequired,
+    manufacturer: PropTypes.number.isRequired,
+    lastSavedAt: PropTypes.instanceOf(Date),
+  }),
+  time: PropTypes.instanceOf(Date),
 }
 
 export default UnknownDrone

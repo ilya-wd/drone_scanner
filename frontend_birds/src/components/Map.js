@@ -1,4 +1,5 @@
 import Plot from 'react-plotly.js'
+import PropTypes from 'prop-types'
 
 const Map = ({ knownDrones, unknownDrones }) => {
   const dronesInNDZ = {
@@ -8,7 +9,7 @@ const Map = ({ knownDrones, unknownDrones }) => {
     y: [],
     marker: { color: 'red', size: [] },
     text: [],
-    hovertemplate: '%{text}' + '<extra></extra>',
+    hovertemplate: '%{text}<extra></extra>',
   }
 
   const windowWidth = window.innerWidth
@@ -24,11 +25,11 @@ const Map = ({ knownDrones, unknownDrones }) => {
     x: [250],
     y: [250],
     marker: { color: 'blue', size: [10] },
-    hovertemplate: 'The Nest' + '<extra></extra>',
+    hovertemplate: 'The Nest<extra></extra>',
   }
 
   if (knownDrones || unknownDrones) {
-    knownDrones.concat(unknownDrones).map((drone) => {
+    knownDrones.concat(unknownDrones).forEach((drone) => {
       const xCoord = Math.round(drone.positionX / 1000)
       const yCoord = Math.round(drone.positionY / 1000)
       dronesInNDZ.x.push(xCoord)
@@ -95,6 +96,11 @@ const Map = ({ knownDrones, unknownDrones }) => {
   }
 
   return <Plot className="map column" data={plotData} layout={plotLayout} config={plotConfig} />
+}
+
+Map.propTypes = {
+  knownDrones: PropTypes.array.isRequired,
+  unknownDrones: PropTypes.array.isRequired,
 }
 
 export default Map

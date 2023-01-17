@@ -1,8 +1,9 @@
 import { Table } from 'react-bootstrap'
 import UnknownDrone from './presentationals/UnknownDrone'
 import KnownDrone from './presentationals/KnownDrone'
+import PropTypes from 'prop-types'
 
-const NoPilotKnown = ({}) => {
+const NoPilotKnown = () => {
   return (
     <tr key="noPilotsKnown">
       <td colspan="5">
@@ -16,7 +17,7 @@ const NoPilotKnown = ({}) => {
   )
 }
 
-const NoPilotUnknown = ({}) => {
+const NoPilotUnknown = () => {
   return (
     <tr key="noPilotsUknown">
       <h3>
@@ -67,6 +68,12 @@ const InfoTable = ({ knownDrones, unknownDrones, time }) => {
       </Table>
     </div>
   )
+}
+
+InfoTable.propTypes = {
+  knownDrones: PropTypes.array.isRequired,
+  unknownDrones: PropTypes.array.isRequired,
+  time: PropTypes.instanceOf(Date),
 }
 
 export default InfoTable
