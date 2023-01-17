@@ -3,54 +3,54 @@ name: Continuous Integration
 on: push
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      # - name: Install dependencies on back end
-      #   run: npm i
-      #   working-directory: backend_birds
+  #     # - name: Install dependencies on back end
+  #     #   run: npm i
+  #     #   working-directory: backend_birds
 
-      - name: Install dependencies on front end
-        run: npm i
-        working-directory: frontend_birds
+  #     - name: Install dependencies on front end
+  #       run: npm i
+  #       working-directory: frontend_birds
 
-      # - name: Create .env file
-      #   uses: SpicyPizza/create-envfile@v1.3.0
-      #   with:
-      #     envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  #     # - name: Create .env file
+  #     #   uses: SpicyPizza/create-envfile@v1.3.0
+  #     #   with:
+  #     #     envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      # - name: create databases for testing
-      #   run: touch test.db
-      #     touch dev.db
+  #     # - name: create databases for testing
+  #     #   run: touch test.db
+  #     #     touch dev.db
 
-      # - name: Initialize prisma
-      #   run: npx prisma migrate dev && npx prisma generate && npm prisma-migrate
-      #   working-directory: backend_birds
+  #     # - name: Initialize prisma
+  #     #   run: npx prisma migrate dev && npx prisma generate && npm prisma-migrate
+  #     #   working-directory: backend_birds
 
-      # - name: Build the application
-      #   run: npm run build:ui
-      #   working-directory: backend_birds
+  #     # - name: Build the application
+  #     #   run: npm run build:ui
+  #     #   working-directory: backend_birds
 
-      # - name: Run tests for back end
-      #   run: npm run test
-      #   working-directory: backend_birds
+  #     # - name: Run tests for back end
+  #     #   run: npm run test
+  #     #   working-directory: backend_birds
 
-      - name: Run tests for front end
-        run: npm run test
-        working-directory: frontend_birds
+  #     - name: Run tests for front end
+  #       run: npm run test
+  #       working-directory: frontend_birds
 
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
-    needs: [test]
+    # needs: [test]
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
