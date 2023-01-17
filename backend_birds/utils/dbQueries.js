@@ -131,11 +131,6 @@ const findDevice = async () => {
   return device
 }
 
-const findPilots = async () => {
-  const pilots = await prisma.pilot.findMany({})
-  return pilots
-}
-
 module.exports = {
   saveDrone,
   saveDevice,
