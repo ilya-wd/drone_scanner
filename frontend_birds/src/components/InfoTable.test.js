@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import InfoTable from './InfoTable.js'
-import { time, unknownDrones, knownDrones } from './testingDataForComponents'
+import { time, unknownDrones, knownDrones } from './componentsUtils/testingDataForComponents'
 
 describe('<InfoTable />', () => {
   test('renders known drones correctly', () => {

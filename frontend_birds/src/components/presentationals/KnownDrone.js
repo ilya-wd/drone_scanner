@@ -36,7 +36,7 @@ KnownDrone.propTypes = {
   drone: PropTypes.shape({
     closestDistance: PropTypes.number.isRequired,
     currentDistance: PropTypes.number.isRequired,
-    lastSavedAt: PropTypes.instanceOf(Date),
+    lastSavedAt: PropTypes.string.isRequired,
     pilot: PropTypes.shape({
       firstName: PropTypes.string.isRequired,
       lastName: PropTypes.string.isRequired,

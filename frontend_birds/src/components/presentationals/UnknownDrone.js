@@ -35,9 +35,9 @@ const UnknownDrone = ({ drone, time }) => {
 
 UnknownDrone.propTypes = {
   drone: PropTypes.shape({
-    serialNumber: PropTypes.number.isRequired,
-    manufacturer: PropTypes.number.isRequired,
-    lastSavedAt: PropTypes.instanceOf(Date),
+    serialNumber: PropTypes.string.isRequired,
+    manufacturer: PropTypes.string.isRequired,
+    lastSavedAt: PropTypes.string.isRequired,
   }),
   time: PropTypes.instanceOf(Date),
 }
