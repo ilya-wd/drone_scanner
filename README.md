@@ -30,8 +30,9 @@ Other features – scanner name, scanner and server uptimes.
 - DB: SQLite and Prisma
 
 ### Launching the app locally
+Requires NodeJS and mpm installed
 
-1. Clone the repository
+1. Clone the repository `git clone https://github.com/username-u/birds.git`
 2. Create .env file. Specify url for your sqlite database `DATABASE_URL` and `PORT` for the server
 3. Run `cd ./backend_birds && npm i` and `cd ./frontend_birds && npm i` from the root
 4. Since the /build directory is uploaded to the repository, you can simply run the following command from the root to launch the app:
