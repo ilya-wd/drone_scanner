@@ -1,6 +1,7 @@
 # No Drones In The Wild
 
 ## You can find the app at https://no-drones-in-the-wild.fly.dev/
+## **[Currently the API that served information about drones is disabled]**
 
 ### [Task description here](https://assignments.reaktor.com/birdnest/)
 
